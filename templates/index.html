@@ -1,0 +1,11 @@
+<!doctype html>
+{% for commune in polling_station_grouped_by_commune_dict.keys() %}
+<h2>{{commune}}</h2>
+<ul>
+	{% for polling_station_name in polling_station_grouped_by_commune_dict[commune] %}
+	<li><a href="/observation/{{commune}}/{{polling_station_name }}" />{{ polling_station_name }}</a>
+	{% endfor %}
+</ul>
+<br/>
+{% endfor %}
+

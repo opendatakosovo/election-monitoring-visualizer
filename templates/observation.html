@@ -1,0 +1,118 @@
+<!doctype html>
+<script src="/static/Chartjs/Chart.js"></script>
+<script>
+	function plotVotedByBarChart(observationId) {
+
+		var howManyVotedByTenAM = document.getElementById("ten-" + observationId).innerHTML;
+		var howManyVotedByOnePM = document.getElementById("one-" + observationId).innerHTML;
+		var howManyVotedByFourPM= document.getElementById("four-" + observationId).innerHTML;
+		var howManyVotedBySevenPM = document.getElementById("seven-" + observationId).innerHTML;
+
+		var data = {
+    		labels: ["10 AM", "1 PM", "4 PM", "7 PM"],
+    		datasets: [
+        		{
+            		label: "My First dataset",
+            		fillColor: "rgba(151,187,205,0.5)",
+            		strokeColor: "rgba(151,187,205,0.8)",
+            		highlightFill: "rgba(151,187,205,0.75)",
+            		highlightStroke: "rgba(151,187,205,1)",
+            		data: [
+						howManyVotedByTenAM,
+						howManyVotedByOnePM,
+						howManyVotedByFourPM,
+						howManyVotedBySevenPM]
+        		}
+    		]
+		};
+
+		var chartId = "votedByBarChart-" + observationId
+		var ctx = document.getElementById(chartId).getContext("2d");
+		var votedByBarChart = new Chart(ctx).Bar(data);
+
+	}
+
+	function plotKvvMembersPieChart(observationId){
+
+		var kvvMembersTotal = document.getElementById("kvv-" + observationId).innerHTML;
+		var kvvMembersFemale = document.getElementById("kvvf-" + observationId).innerHTML;
+		var kvvMembersMale = kvvMembersTotal - kvvMembersFemale;
+
+		kvvfPercentage = Math.round(100 * kvvMembersFemale / kvvMembersTotal)
+		kvvmPercentage = 100 - kvvfPercentage;
+
+		var data = [
+			{
+				value: kvvmPercentage,
+				color: "#46BFBD",
+				highlight: "#5AD3D1",
+				label: "Male"
+			},
+			{
+				value: kvvfPercentage,
+				color: "#FDB45C",
+				highlight: "#FFC870",
+				label: "Female"
+			}
+			
+		]
+
+		
+		{# Template conflicts with Graph.js' <% and %>. Figure out how to escape these.
+		var options = {
+			tooltipTemplate:"<%if (label){%><%=label%>: <%}%><%= value %>"
+		}#}
+
+		var chartId = "kvvMemberPieChart-" + observationId
+		var ctx = document.getElementById(chartId).getContext("2d");
+		
+		var kvvMemberPieChart = new Chart(ctx).Pie(data);
+
+	}
+</script>
+<title>Observations</title>
+<h1>Observations for polling station '{{ observations[0].pollingStation.name }}' in  {{ observations[0].pollingStation.commune }}</h1>
+<h2>Polling Station Number: {{ observations[0].pollingStation.number }}</h2>
+<br/>
+
+{% for observation in observations %}
+
+<table style="padding-bottom:50px;">
+	<tr>
+		<td colspan="4" align="lef" >
+			<strong>Observation in Room Number {{ observation.pollingStation.roomNumber }}:</strong>
+		</td>
+	</tr>
+	<tr>
+		<td style="padding-right:50px;">
+			<strong>How Many Voted By:</strong>
+			<ul>
+				<li>10 AM: <strong><span id="ten-{{ observation._id }}">{{ observation.votingProcess.voters.howManyVotedBy.tenAM }}</span></strong> 
+				<li>1 PM: <strong><span id="one-{{ observation._id }}">{{ observation.votingProcess.voters.howManyVotedBy.onePM }}</span></strong> 
+				<li>4 PM: <strong><span id="four-{{ observation._id }}">{{ observation.votingProcess.voters.howManyVotedBy.fourPM }}</span></strong> 
+				<li>7 PM: <strong><span id="seven-{{ observation._id }}">{{ observation.votingProcess.voters.howManyVotedBy.sevenPM }}</span></strong> 
+			</ul>
+		</td>
+		<td>
+			<canvas id="votedByBarChart-{{ observation._id }}" width="400" height="300"></canvas>
+		</td>
+		<td style="padding-left:30px;">
+			<strong>How Many KVV Members:</strong>
+			<ul>
+				<li>Total: <strong><span id="kvv-{{ observation._id }}">{{ observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total }}</span></strong> 
+				<li>Male: <strong><span id="kvvm-{{ observation._id }}">{{ observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total - observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female }}</span></strong> 
+				<li>Female: <strong><span id="kvvf-{{ observation._id }}">{{ observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female }}</span></strong> 
+			</ul>
+		</td>
+		<td>
+			<canvas id="kvvMemberPieChart-{{ observation._id }}" width="400" height="300"></canvas>
+		</td>
+	</tr>
+	
+</table>
+
+	<script>
+		plotVotedByBarChart('{{ observation._id }}');
+		plotKvvMembersPieChart('{{ observation._id }}');
+	</script>
+{% endfor %}

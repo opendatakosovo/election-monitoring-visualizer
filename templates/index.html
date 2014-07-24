@@ -1,11 +1,24 @@
 <!doctype html>
-{% for commune in polling_station_grouped_by_commune_dict.keys() %}
-<h2>{{commune}}</h2>
-<ul>
-	{% for polling_station_name in polling_station_grouped_by_commune_dict[commune] %}
-	<li><a href="/observation/{{commune}}/{{polling_station_name }}" />{{ polling_station_name }}</a>
-	{% endfor %}
-</ul>
-<br/>
-{% endfor %}
+<html>
+	<head>
+		<script>
+			var polling_station_grouped_by_commune_json = {{ polling_station_grouped_by_commune_dict|tojson}};
+		</script>
+		<script type="text/javascript" src="/static/jQuery/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="/static/election-monitoring-visualizer.js"></script>
+	</head>
+	<body>
+		<select id="commune_select">
+		</select>
 
+		<select id="polling_station_select">
+		</select>
+
+		<br/><br/><br/>
+		<div id="kvvMembersPieChartsContainer"/>
+		</div>
+
+	</body>
+
+</html>

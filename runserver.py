@@ -1,8 +1,8 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Response
 from flask.ext.pymongo import PyMongo
 import pymongo
 from collections import OrderedDict
-
+from bson import json_util
 
 app = Flask(__name__)
 app.debug = True
@@ -12,7 +12,7 @@ app.config['MONGO_DBNAME'] = 'kdi'
 mongo = PyMongo(app, config_prefix='MONGO')
 
 @app.route('/')
-def hello_world():
+def index():
 
 	polling_stations = mongo.db.localelectionsfirstround2013.find().sort([("pollingStation.commune", pymongo.ASCENDING), ("pollingStation.name", pymongo.ASCENDING), ("pollingStation.roomNumber", pymongo.ASCENDING)])
 
@@ -39,6 +39,15 @@ def hello_world():
 def observation(commune, polling_station_name):
 	observations = mongo.db.localelectionsfirstround2013.find({'pollingStation.commune': commune, 'pollingStation.name': polling_station_name})
 	return render_template('observation.html', observations=observations)
+
+@app.route('/api/observations/<string:commune>/<string:polling_station_name>', methods=['GET'])
+def get_observations(commune, polling_station_name):
+	observations = mongo.db.localelectionsfirstround2013.find({'pollingStation.commune': commune, 'pollingStation.name': polling_station_name})
+
+	resp = Response(response=json_util.dumps(observations), mimetype='application/json')
+
+	return resp
+
 
 if __name__ == '__main__':
 	app.run()

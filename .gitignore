@@ -24,6 +24,7 @@ venv/
 *.egg
 *.py~
 *.html~
+*.js~
 
 # Installer logs
 pip-log.txt

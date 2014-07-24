@@ -1,7 +1,9 @@
-google.load("visualization", "1", {packages:["corechart"]});	
+google.load("visualization", "1", {packages:["corechart", "table"]});	
 
 // Draw the KVV members gender distribution pit chart
-function drawKvvMembersPieChart(index, kvvMembersTotal, kvvMembersFemale){
+function drawKvvMembersPieChart(index, kvvMembers){
+	var kvvMembersTotal = kvvMembers.total;
+	var kvvMembersFemale = kvvMembers.female;
 
 	// create div container for the pie chart
 	// e.g. <div id="kvvMembersPieChart" style="width: 900px; height: 500px;"></div>
@@ -25,6 +27,63 @@ function drawKvvMembersPieChart(index, kvvMembersTotal, kvvMembersFemale){
 	chart.draw(data, options);
 }
 
+// Draw election process irregularities table
+function drawIrregularitiesTable(index, irregularities){
+
+	var chartContainerDivId = 'irregularities-' + index;
+	$("#irregularitiesTableContainer").append("<div id='" + chartContainerDivId + "'></div>");
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Irregularity');
+    data.addColumn('boolean', 'Occured');
+    data.addRows([
+		['Unauthorized person stayed at the polling station', translateIrregularity(irregularities.unauthorizedPersonsStayedAtTheVotingStation)],
+		['Allowed to vote',  translateIrregularity(irregularities.allowedToVote)],
+		['Photographed ballot', translateIrregularity(irregularities.photographedBallot)],
+		['Accidents during the voting process',  translateIrregularity(irregularities.anyAccidentHappenedDuringTheProcess)],
+		['Violence in the polling station', translateIrregularity(irregularities.violenceInTheVotingStation)],
+		['More than one person the the voting cabin',  translateIrregularity(irregularities.moreThanOnePersonBehindTheCabin)],
+		['More than one ballot inserted', translateIrregularity(irregularities.insertedMoreThanOneBallot)],
+		['Cases of closed polling station',  translateIrregularity(irregularities.hasTheVotingStationBeenClosedInAnyCase)],
+		['Political propaganda inside the voting station',  translateIrregularity(irregularities.politicalPropagandaInsideTheVotingStation)],
+		['Bob',  translateIrregularity(irregularities.attemptToVoteMoreThanOnce)]
+    ]);
+
+	var options = {
+	  	width: '450px'
+	};
+
+
+	//FIXME: what about caseVotingOutsideTheCabin?
+
+    var table = new google.visualization.Table(document.getElementById(chartContainerDivId));
+    table.draw(data, options);
+}
+
+function translateIrregularity(irregularity){
+	if(irregularity == "N/A"){
+		return false;
+	}
+	else if(irregularity == true){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
+function drawHowManyVotedByBarChart(){
+	//TODO: Implement
+}
+
+function drawVotingProcessTable(){
+	//TODO: Implement
+}
+
+function drawMissingMaterialTable(){
+	//TODO: Implement
+}
+ 
 // Initialize polling station name dropdown list
 function initPollingStationDropdown(communeName){
 
@@ -55,10 +114,15 @@ function visualizeData(communeName, pollingStationName){
 	$.get(url, function(data) {
 
 		$.each(data, function(index, observation) {
-			var kvvMembersTotal = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total;
-			var kvvMembersFemale = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female;
+			var kvvMembers = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers
+			drawKvvMembersPieChart(index, kvvMembers);
 
-			drawKvvMembersPieChart(index, kvvMembersTotal, kvvMembersFemale);
+			var irregularities = observation.irregularities;
+			drawIrregularitiesTable(index, irregularities);
+
+			drawHowManyVotedByBarChart();
+			drawVotingProcessTable();
+			drawMissingMaterialTable(); 
 		});
 		
 	});
@@ -66,6 +130,7 @@ function visualizeData(communeName, pollingStationName){
 
 function clearPreviouslyGeneratedDataVisualization(){
 	$("#kvvMembersPieChartsContainer").empty();
+	$("#irregularitiesTableContainer").empty();
 }
 
 $(document).ready(function(){

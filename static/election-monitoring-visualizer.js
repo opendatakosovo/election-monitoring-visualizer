@@ -31,7 +31,7 @@ function initPollingStationDropdown(communeName){
 	// First clear the polling station drowpown list
 	$('#polling_station_select option').remove();
 
-	$.each(polling_station_grouped_by_commune_json[communeName], function(index, value) {
+	$.each(pollingStationGroupedByCommuneJson[communeName], function(index, value) {
 		$('#polling_station_select')
 			.append($("<option></option>")
 			.attr("value", value)
@@ -73,7 +73,7 @@ $(document).ready(function(){
 	// Initialize commune name dropdown list.
 	// index is the name of the commune.
 	// value is the name of the polling stations.
-	$.each(polling_station_grouped_by_commune_json, function(index, value) {
+	$.each(pollingStationGroupedByCommuneJson, function(index, value) {
 		$('#commune_select')
 			.append($("<option></option>")
 			.attr("value", index)

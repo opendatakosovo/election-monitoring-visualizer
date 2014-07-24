@@ -1,5 +1,14 @@
 google.load("visualization", "1", {packages:["corechart", "table"]});	
 
+function drawPollingStationInfo(pollingStation){
+	$("#dataVisualizationContainer").append("<h1 id='pollingStationInfo'>Observations for polling station '" + pollingStation.name + "'" + " in " + pollingStation.commune + "</h1>");
+}
+
+function drawSectionHeader(index, roomNumber){
+	var containerDivId = 'sectionHeader-' + index;
+	$("#dataVisualizationContainer").append("<h2 id='" + containerDivId + "'>Room " + roomNumber + ":</h2>");
+}
+
 // Draw the KVV members gender distribution pit chart
 function drawKvvMembersPieChart(index, kvvMembers){
 	var kvvMembersTotal = kvvMembers.total;
@@ -8,7 +17,7 @@ function drawKvvMembersPieChart(index, kvvMembers){
 	// create div container for the pie chart
 	// e.g. <div id="kvvMembersPieChart" style="width: 900px; height: 500px;"></div>
 	var chartContainerDivId = 'kvvMembersPieChart-' + index;
-	$("#kvvMembersPieChartsContainer").append("<div id='" + chartContainerDivId + "' style='width: 900px; height: 500px;'></div>");
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "' style='width: 900px; height: 500px;'></div>");
 
 	var kvvMembersMale = kvvMembersTotal - kvvMembersFemale;
 
@@ -31,7 +40,7 @@ function drawKvvMembersPieChart(index, kvvMembers){
 function drawIrregularitiesTable(index, irregularities){
 
 	var chartContainerDivId = 'irregularities-' + index;
-	$("#irregularitiesTableContainer").append("<div id='" + chartContainerDivId + "'></div>");
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "'></div>");
 
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Irregularity');
@@ -113,7 +122,12 @@ function visualizeData(communeName, pollingStationName){
 
 	$.get(url, function(data) {
 
+		drawPollingStationInfo(data[0].pollingStation);
+
 		$.each(data, function(index, observation) {
+			var roomNumer =  observation.pollingStation.roomNumber;
+			drawSectionHeader(index, roomNumer);
+
 			var kvvMembers = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers
 			drawKvvMembersPieChart(index, kvvMembers);
 
@@ -129,8 +143,7 @@ function visualizeData(communeName, pollingStationName){
 }
 
 function clearPreviouslyGeneratedDataVisualization(){
-	$("#kvvMembersPieChartsContainer").empty();
-	$("#irregularitiesTableContainer").empty();
+	$("#dataVisualizationContainer").empty();
 }
 
 $(document).ready(function(){

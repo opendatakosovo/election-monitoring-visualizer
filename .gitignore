@@ -23,6 +23,7 @@ venv/
 .installed.cfg
 *.egg
 *.py~
+*.html~
 
 # Installer logs
 pip-log.txt

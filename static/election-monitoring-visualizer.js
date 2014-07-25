@@ -55,7 +55,7 @@ function drawIrregularitiesTable(index, irregularities){
 		['More than one ballot inserted', translateIrregularity(irregularities.insertedMoreThanOneBallot)],
 		['Cases of closed polling station',  translateIrregularity(irregularities.hasTheVotingStationBeenClosedInAnyCase)],
 		['Political propaganda inside the voting station',  translateIrregularity(irregularities.politicalPropagandaInsideTheVotingStation)],
-		['Bob',  translateIrregularity(irregularities.attemptToVoteMoreThanOnce)]
+		['Attempted to vote more than once',  translateIrregularity(irregularities.attemptToVoteMoreThanOnce)]
     ]);
 
 	var options = {
@@ -81,16 +81,115 @@ function translateIrregularity(irregularity){
 
 }
 
-function drawHowManyVotedByBarChart(){
-	//TODO: Implement
+function drawHowManyVotedByBarChart(index,voters){
+	var votersByTen = voters.tenAM;
+	var votersByOne = voters.onePM;
+	var votersByFour = voters.fourPM;
+	var votersBySeven = voters.sevenPM;
+
+	// create div container for the bar chart
+	var chartContainerDivId = 'votersByHourBarChart-' + index;
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "' style='width: 900px; height: 500px;'></div>");
+
+	var data = google.visualization.arrayToDataTable([
+		['Hour', 'Value',{ role: "style" }],
+		['10:00', votersByTen,"silver" ],
+		['13:00', votersByOne,"#b87333"],
+		['16:00', votersByFour,"gold"],
+		['19:00', votersBySeven,"color: #e5e4e2"]
+	]);
+	var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+	var options = {
+	  	title: 'How many voted by Hour!',
+		is3D: true,
+		bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+	};
+	
+
+	var chart = new google.visualization.ColumnChart(document.getElementById(chartContainerDivId));
+	chart.draw(data, options);
 }
 
-function drawVotingProcessTable(){
-	//TODO: Implement
+function drawVotingProcessTable(index, votingProcess){
+	
+
+	var chartContainerDivId = 'votingProcess-' + index;
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "'></div>");
+
+	var ultraControl= votingProcess.ultraVioletControl;
+	var fingerSprayed =votingProcess.fingerSprayed;
+	var identifiedWithDocument = votingProcess.identifiedWithDocument;
+
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'VotingProcess');
+    data.addColumn('string', 'Occured');
+    data.addRows([
+		['Ultra Violet Control', ultraControl ],
+		['Finger Sprayed',  fingerSprayed],
+		['Identifed with Document ID', identifiedWithDocument]
+		
+    ]);
+
+	var options = {
+	  	width: '450px'
+	};
+
+
+	//FIXME: what about sealedBallot?
+
+    var table = new google.visualization.Table(document.getElementById(chartContainerDivId));
+    table.draw(data, options);
 }
 
-function drawMissingMaterialTable(){
-	//TODO: Implement
+function drawMissingMaterialTable(index, missingMaterial){
+		
+
+	var chartContainerDivId = 'missingMaterial-' + index;
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "'></div>");
+
+	var ballotBox = missingMaterial.ballotBox;
+	var votersBook = missingMaterial.votersBook;
+	var spray = missingMaterial.spray;
+	var votersList = missingMaterial.votersList;
+	var envelopsForConditionVoters = missingMaterial.envelopsForConditionVoters;
+	var uvLamp = missingMaterial.uvLamp;
+	var votingCabin = missingMaterial.votingCabin;
+	var stamp = missingMaterial.stamp;
+	var ballots = missingMaterial.ballots;
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Missing Material');
+    data.addColumn('boolean', 'Occured');
+    data.addRows([
+		['Ballot Box', ballotBox ],
+		['Voters Book',  votersBook],
+		['Spray', spray],
+		['Voters List', votersList],
+		['Envelopes for Condition Voters', envelopsForConditionVoters],
+		['UV Lamp', uvLamp],
+		['Voting Cabin', votingCabin],
+		['Stamp', stamp],
+		['Ballots', ballots]
+		
+    ]);
+
+	var options = {
+	  	width: '450px'
+	};
+
+
+
+    var table = new google.visualization.Table(document.getElementById(chartContainerDivId));
+    table.draw(data, options);
 }
  
 // Initialize polling station name dropdown list
@@ -128,15 +227,20 @@ function visualizeData(communeName, pollingStationName){
 			var roomNumer =  observation.pollingStation.roomNumber;
 			drawSectionHeader(index, roomNumer);
 
-			var kvvMembers = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers
+			var kvvMembers = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers;
 			drawKvvMembersPieChart(index, kvvMembers);
 
 			var irregularities = observation.irregularities;
 			drawIrregularitiesTable(index, irregularities);
+			
+			var voters = observation.votingProcess.voters.howManyVotedBy;
+			drawHowManyVotedByBarChart(index, voters);
+			
+			var votingProcess= observation.votingProcess.voters;
+			drawVotingProcessTable(index, votingProcess);
 
-			drawHowManyVotedByBarChart();
-			drawVotingProcessTable();
-			drawMissingMaterialTable(); 
+			var missingMaterial= observation.preparation.missingMaterial;
+			drawMissingMaterialTable(index, missingMaterial); 
 		});
 		
 	});

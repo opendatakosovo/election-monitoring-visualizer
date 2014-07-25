@@ -1,118 +1,60 @@
 <!doctype html>
+<head> 
+
 <script src="/static/Chartjs/Chart.js"></script>
-<script>
-	function plotVotedByBarChart(observationId) {
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<head>
+</head>
+<body>	
+<script type="text/javascript">
+{% set tenAM =0 %}
+{% set onePM =0 %}
+{% set fourPM=0 %}
+{% set sevenPM =0 %}
+{% for observation in observations %}	
 
-		var howManyVotedByTenAM = document.getElementById("ten-" + observationId).innerHTML;
-		var howManyVotedByOnePM = document.getElementById("one-" + observationId).innerHTML;
-		var howManyVotedByFourPM= document.getElementById("four-" + observationId).innerHTML;
-		var howManyVotedBySevenPM = document.getElementById("seven-" + observationId).innerHTML;
+	{% set tenAM = tenAM + observation.votingProcess.voters.howManyVotedBy.tenAM %} 
+	var votedByTenAM = {{tenAM}}
+	{% set onePM = onePM + observation.votingProcess.voters.howManyVotedBy.onePM %} 
+	var votedByOnePM={{onePM}}
+	{% set fourPM = fourPM + observation.votingProcess.voters.howManyVotedBy.fourPM %} 
+	var votedByFourPM={{fourPM}}
+	{% set sevenPM = sevenPM + observation.votingProcess.voters.howManyVotedBy.sevenPM %} 
+	var votedBySevenPM={{sevenPM}}
 
-		var data = {
-    		labels: ["10 AM", "1 PM", "4 PM", "7 PM"],
-    		datasets: [
-        		{
-            		label: "My First dataset",
-            		fillColor: "rgba(151,187,205,0.5)",
-            		strokeColor: "rgba(151,187,205,0.8)",
-            		highlightFill: "rgba(151,187,205,0.75)",
-            		highlightStroke: "rgba(151,187,205,1)",
-            		data: [
-						howManyVotedByTenAM,
-						howManyVotedByOnePM,
-						howManyVotedByFourPM,
-						howManyVotedBySevenPM]
-        		}
-    		]
-		};
-
-		var chartId = "votedByBarChart-" + observationId
-		var ctx = document.getElementById(chartId).getContext("2d");
-		var votedByBarChart = new Chart(ctx).Bar(data);
-
-	}
-
-	function plotKvvMembersPieChart(observationId){
-
-		var kvvMembersTotal = document.getElementById("kvv-" + observationId).innerHTML;
-		var kvvMembersFemale = document.getElementById("kvvf-" + observationId).innerHTML;
-		var kvvMembersMale = kvvMembersTotal - kvvMembersFemale;
-
-		kvvfPercentage = Math.round(100 * kvvMembersFemale / kvvMembersTotal)
-		kvvmPercentage = 100 - kvvfPercentage;
-
-		var data = [
-			{
-				value: kvvmPercentage,
-				color: "#46BFBD",
-				highlight: "#5AD3D1",
-				label: "Male"
-			},
-			{
-				value: kvvfPercentage,
-				color: "#FDB45C",
-				highlight: "#FFC870",
-				label: "Female"
-			}
-			
-		]
-
-		
-		{# Template conflicts with Graph.js' <% and %>. Figure out how to escape these.
-		var options = {
-			tooltipTemplate:"<%if (label){%><%=label%>: <%}%><%= value %>"
-		}#}
-
-		var chartId = "kvvMemberPieChart-" + observationId
-		var ctx = document.getElementById(chartId).getContext("2d");
-		
-		var kvvMemberPieChart = new Chart(ctx).Pie(data);
-
-	}
-</script>
-<title>Observations</title>
-<h1>Observations for polling station '{{ observations[0].pollingStation.name }}' in  {{ observations[0].pollingStation.commune }}</h1>
-<h2>Polling Station Number: {{ observations[0].pollingStation.number }}</h2>
-<br/>
-
-{% for observation in observations %}
-
-<table style="padding-bottom:50px;">
-	<tr>
-		<td colspan="4" align="lef" >
-			<strong>Observation in Room Number {{ observation.pollingStation.roomNumber }}:</strong>
-		</td>
-	</tr>
-	<tr>
-		<td style="padding-right:50px;">
-			<strong>How Many Voted By:</strong>
-			<ul>
-				<li>10 AM: <strong><span id="ten-{{ observation._id }}">{{ observation.votingProcess.voters.howManyVotedBy.tenAM }}</span></strong> 
-				<li>1 PM: <strong><span id="one-{{ observation._id }}">{{ observation.votingProcess.voters.howManyVotedBy.onePM }}</span></strong> 
-				<li>4 PM: <strong><span id="four-{{ observation._id }}">{{ observation.votingProcess.voters.howManyVotedBy.fourPM }}</span></strong> 
-				<li>7 PM: <strong><span id="seven-{{ observation._id }}">{{ observation.votingProcess.voters.howManyVotedBy.sevenPM }}</span></strong> 
-			</ul>
-		</td>
-		<td>
-			<canvas id="votedByBarChart-{{ observation._id }}" width="400" height="300"></canvas>
-		</td>
-		<td style="padding-left:30px;">
-			<strong>How Many KVV Members:</strong>
-			<ul>
-				<li>Total: <strong><span id="kvv-{{ observation._id }}">{{ observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total }}</span></strong> 
-				<li>Male: <strong><span id="kvvm-{{ observation._id }}">{{ observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total - observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female }}</span></strong> 
-				<li>Female: <strong><span id="kvvf-{{ observation._id }}">{{ observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female }}</span></strong> 
-			</ul>
-		</td>
-		<td>
-			<canvas id="kvvMemberPieChart-{{ observation._id }}" width="400" height="300"></canvas>
-		</td>
-	</tr>
-	
-</table>
-
-	<script>
-		plotVotedByBarChart('{{ observation._id }}');
-		plotKvvMembersPieChart('{{ observation._id }}');
-	</script>
 {% endfor %}
+
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+	["Number of votes", "Time", { role: "style" } ],
+        ["10:00",  votedByTenAM, "#b87333"],
+	["13:00", votedByOnePM , "silver"],
+	["16:00", votedByFourPM, "gold"],
+	["19:00",  votedBySevenPM , "color: #e5e4e2"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+      var options = {
+	title: "Casted Ballots Throughout The Day",
+	width: 600,
+	height: 400,
+	bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+      chart.draw(view, options);
+  }
+</script>
+<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
+
+</body>
+</html>

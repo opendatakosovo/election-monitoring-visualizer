@@ -53,6 +53,11 @@ def observations(commune):
 	observations = mongo.db.localelectionsfirstround2013.find({'pollingStation.commune':commune})
 	return render_template('observation.html', observations=observations)
 
+@app.route('/observation/<string:commune>/<string:name>/', methods=['GET'])
+def polling_station_observations(commune, name):
+	observations = mongo.db.localelectionsfirstround2013.find({'pollingStation.commune':commune})
+	polling_station_observations = mongo.db.localelectionsfirstround2013.find({'pollingStation.name':name})
+	return render_template('page.html', polling_station_observations=polling_station_observations)
 
 if __name__ == '__main__':
 	app.run()

@@ -1,0 +1,20 @@
+<!doctype html>
+<head> 
+
+<script src="/static/Chartjs/Chart.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<head>
+</head>
+<body>	
+	<form action="http://127.0.0.1:5000/search/" method="GET">
+	Commune : <input type="text" name="commune"><br>
+  unauthorizedAtVotingStation: <input type="text" name="unauthorizedAtVotingStation"><br>
+	allowedToVote: <input type="text" name="allowedToVote"><br>
+	photographedBallot: <input type="text" name="photographedBallot"><br>
+ 	 <input type="search" /> 
+	</form>
+    {% for c in coursor %}
+		{{c.irregularities.allowedToVote}}
+	{% endfor %}
+</body>
+</html>

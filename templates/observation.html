@@ -6,33 +6,40 @@
 <head>
 </head>
 <body>	
+   <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+	["Number of votes by hour", "Time" ],
+        ["10:00",  {{ tenAM }} ],
+	["13:00", {{ onePM }} ],
+	["16:00", {{ fourPM }} ],
+	["19:00", {{ sevenPM }} ]
+      ]);
+
+         var options = {
+          title: 'Number of votes by hour',
+			is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('columnchart_values'));
+        chart.draw(data, options);
+      }
+</script>
+<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
+	
+
 <script type="text/javascript">
-{% set tenAM =0 %}
-{% set onePM =0 %}
-{% set fourPM=0 %}
-{% set sevenPM =0 %}
-{% for observation in observations %}	
-
-	{% set tenAM = tenAM + observation.votingProcess.voters.howManyVotedBy.tenAM %} 
-	var votedByTenAM = {{tenAM}}
-	{% set onePM = onePM + observation.votingProcess.voters.howManyVotedBy.onePM %} 
-	var votedByOnePM={{onePM}}
-	{% set fourPM = fourPM + observation.votingProcess.voters.howManyVotedBy.fourPM %} 
-	var votedByFourPM={{fourPM}}
-	{% set sevenPM = sevenPM + observation.votingProcess.voters.howManyVotedBy.sevenPM %} 
-	var votedBySevenPM={{sevenPM}}
-
-{% endfor %}
 
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
     var data = google.visualization.arrayToDataTable([
-	["Number of votes", "Time", { role: "style" } ],
-        ["10:00",  votedByTenAM, "#b87333"],
-	["13:00", votedByOnePM , "silver"],
-	["16:00", votedByFourPM, "gold"],
-	["19:00",  votedBySevenPM , "color: #e5e4e2"]
+	["Observators in PollingStation, distributed by gender", "Gender", { role: "style" } ],
+       
+	["Male", {{male}}, "gold"],
+	["Female", {{female}}, "pink"]
       ]);
 
       var view = new google.visualization.DataView(data);
@@ -44,17 +51,16 @@
                        2]);
 
       var options = {
-	title: "Casted Ballots Throughout The Day",
+	title: "Observators in PollingStation, distributed by gender",
 	width: 600,
 	height: 400,
 	bar: {groupWidth: "95%"},
         legend: { position: "none" },
       };
-      var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+      var chart = new google.visualization.ColumnChart(document.getElementById("chartByGender"));
       chart.draw(view, options);
   }
 </script>
-<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
-
+<div id="chartByGender" style="width: 900px; height: 300px;"></div>
 </body>
 </html>

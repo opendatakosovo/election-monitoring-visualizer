@@ -12,10 +12,10 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
 	["Number of votes by hour", "Time" ],
-        ["10:00",  {{ tenAM }} ],
-	["13:00", {{ onePM }} ],
-	["16:00", {{ fourPM }} ],
-	["19:00", {{ sevenPM }} ]
+        ["10:00",  {{votesByHour['result'][0]['tenAM']}} ],
+	["13:00", {{votesByHour['result'][0]['onePM']}} ],
+	["16:00", {{votesByHour['result'][0]['sevenPM']}} ],
+	["19:00", {{votesByHour['result'][0]['fourPM']}} ]
       ]);
 
          var options = {
@@ -38,8 +38,8 @@
     var data = google.visualization.arrayToDataTable([
 	["Observators in PollingStation, distributed by gender", "Gender", { role: "style" } ],
        
-	["Male", {{male}}, "gold"],
-	["Female", {{female}}, "pink"]
+	["Male", {{ kvvMGD['result'][0]['total'] - kvvMGD['result'][0]['totalFemale'] }}, "gold"],
+	["Female", {{ kvvMGD['result'][0]['totalFemale'] }}, "pink"]
       ]);
 
       var view = new google.visualization.DataView(data);
@@ -62,5 +62,6 @@
   }
 </script>
 <div id="chartByGender" style="width: 900px; height: 300px;"></div>
+{{kittens}}
 </body>
 </html>

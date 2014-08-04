@@ -1,10 +1,14 @@
 from flask import Flask, request, render_template, Response
+import flask
 from flask.ext.pymongo import PyMongo
 from flask import request
 import pymongo
 from collections import OrderedDict
+import bson
+import json
 from bson import json_util
 from bson.son import SON
+from urllib2 import Request, urlopen, URLError
 
 app = Flask(__name__)
 app.debug = True
@@ -12,6 +16,8 @@ app.debug = True
 # connect to MongoDB database
 app.config['MONGO_DBNAME'] = 'kdi'
 mongo = PyMongo(app, config_prefix='MONGO')
+
+kdi_api_url = 'http://127.0.0.1:5001/api/kdi/observations'
 
 @app.route('/')
 def index():
@@ -40,32 +46,27 @@ def index():
 @app.route('/observation/<string:commune>/<string:polling_station_name>', methods=['GET'])
 def observation(commune, polling_station_name):
 
-	#Calculating Votes By Hour(fetching from MongoDB)
-	observations = mongo.db.localelectionsfirstround2013.aggregate([{ "$match": { "pollingStation.name":polling_station_name } }, {'$group':{'_id':'$pollingStation.commune','tenAM':{'$sum':'$votingProcess.voters.howManyVotedBy.tenAM'},'onePM':{'$sum':'$votingProcess.voters.howManyVotedBy.onePM'},'fourPM':{'$sum':'$votingProcess.voters.howManyVotedBy.fourPM'},'sevenPM':{'$sum':'$votingProcess.voters.howManyVotedBy.sevenPM'}}}])
-	tenAM=0
-	onePM=0
-	fourPM=0
-	sevenPM=0
-
-	for observation in observations['result']:
-		tenAM = observation['tenAM']	
-		onePM = observation['onePM']
-		fourPM = observation['fourPM']
-		sevenPM =observation['sevenPM']
+	# FIXME: fix this by creating slug values in database
+	commune = commune.replace(' ', '%20')
+	polling_station_name = polling_station_name.replace(' ', '%20')
 	
-	#Observators in PollingStation, distributed by gender(fetching from MongoDB)
-	observations = mongo.db.localelectionsfirstround2013.find({'pollingStation.commune': commune, 'pollingStation.name': polling_station_name})
+	#URL to request from KDI API for KVV MEMBERS GENDER DISTRIBUTION
+	url = '%s/kvv-members-gender-distribution/2013/local-elections/first-round/%s/%s' % (kdi_api_url, commune, polling_station_name)
+	# Open the JSON Document requested from the EMA
+	kvv_response = urlopen(url).read()
+	# Convert JSON into a Dictionary
+	kvv_json=json.loads(kvv_response)
+
+	#URL to request from KDI API for VOTES COUNT BY HOUR
+	url1 = '%s/votes-count/2013/local-elections/first-round/%s/%s' % (kdi_api_url, commune, polling_station_name)
+	# Open the JSON Document requested from the EMA
+	votes_by_hour_response = urlopen(url1).read()
+	# Convert JSON into a Dictionary
+	votes_by_hour_json=json.loads(votes_by_hour_response)
+
+	return render_template('observation.html', kvvMGD = kvv_json,votesByHour = votes_by_hour_json)
 
 
-	obsByGender = mongo.db.localelectionsfirstround2013.aggregate([{ "$match": { "pollingStation.name":polling_station_name } }, {'$group':{'_id':'$pollingStation.name','Totali':{'$sum':'$preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total'},'TotaliFemra':{'$sum':'$preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female'}}}])
-	total=0	
-	female=0
-	male=0
-	for o in obsByGender['result']:
-		total=o['Totali']
-		female=o['TotaliFemra']
-	male=total-female
-	return render_template('observation.html',male=male,total=total,female=female,tenAM=tenAM,onePM=onePM,fourPM=fourPM,sevenPM=sevenPM)
 
 @app.route('/api/observations/<string:commune>/<string:polling_station_name>', methods=['GET'])
 def get_observations(commune, polling_station_name):
@@ -78,33 +79,22 @@ def get_observations(commune, polling_station_name):
 @app.route('/observation/<string:commune>/', methods=['GET'])
 def observations(commune):
 
-	#Calculating VotesByHour (fetching from MongoDB)
-	observations = mongo.db.localelectionsfirstround2013.aggregate([{ "$match": { "pollingStation.commune":commune } }, {'$group':{'_id':'$pollingStation.commune','tenAM':{'$sum':'$votingProcess.voters.howManyVotedBy.tenAM'},'onePM':{'$sum':'$votingProcess.voters.howManyVotedBy.onePM'},'fourPM':{'$sum':'$votingProcess.voters.howManyVotedBy.fourPM'},'sevenPM':{'$sum':'$votingProcess.voters.howManyVotedBy.sevenPM'}}}])
-	tenAM=0
-	onePM=0
-	fourPM=0
-	sevenPM=0
-
-	for observation in observations['result']:
-		tenAM = observation['tenAM']	
-		onePM = observation['onePM']
-		fourPM = observation['fourPM']
-		sevenPM =observation['sevenPM']
-
-	#Observators in PollingStation, distributed by gender(fetching from MongoDB)
-	obsByGender = mongo.db.localelectionsfirstround2013.aggregate([{ "$match": { "pollingStation.commune":commune } }, {'$group':{'_id':'$pollingStation.commune','Totali':{'$sum':'$preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.total'},'TotaliFemra':{'$sum':'$preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers.female'}}}])
-	
-	total=0	
-	female=0
-	male=0
-	
-	for o in obsByGender['result']:
-		total=o['Totali']
-		female=o['TotaliFemra']
-	male=total-female
+	# Request the JSON Document from the Election-Monitoring-API (shortcut EMA) based on commune
+	url ='%s/kvv-members-gender-distribution/2013/local-elections/first-round/%s' % (kdi_api_url,commune)
+	# Open the JSON Document requested from the EMA
+	kvvMGD_response = urlopen(url).read()
+	# Convert JSON into a Dictionary
+	kvvMGD = json.loads(kvvMGD_response)
 
 
-	return render_template('observation.html',total=total,male=male,female=female,tenAM=tenAM,onePM=onePM,fourPM=fourPM,sevenPM=sevenPM)
+	# Request the JSON Document from the Election-Monitoring-API (shortcut EMA) based on commune
+	url1 ='%s/votes-count/2013/local-elections/first-round/%s' % (kdi_api_url,commune)
+	# Open the JSON Document requested from the EMA
+	votes_by_hour_response = urlopen(url1).read()
+	# Convert JSON into a Dictionary
+	votes_by_hour = json.loads(votes_by_hour_response)
+
+	return render_template('observation.html',kvvMGD = kvvMGD,votesByHour = votes_by_hour)
 
 
 @app.route('/search/', methods=['POST', 'GET'])
@@ -115,12 +105,15 @@ def login():
 		allowedToVote = request.args.get('allowedToVote', '')
 		photographedBallot = request.args.get('photographedBallot', '')
 		cursor=mongo.db.localelectionsfirstround2013.find({ "$and": [ {"pollingStation.commune":commune},{ "irregularities.unauthorizedPersonsStayedAtTheVotingStation" : unauthorizedAtVotingStation }, { "irregularities.allowedToVote": allowedToVote},{"irregularities.photographedBallot":photographedBallot}] })
-    
 
+		searchResults = json.loads(cursor)		
+		for doc in cursor:
+			json_doc = json.dumps(doc, default=json_util.default)
+			searchResults.append(json_doc)
 		# the code below is executed if the request method
    	 	# was GET or the credentials were invalid
 
-		return render_template('search.html', error=error,commune=commune,unauthorizedAtVotingStation=unauthorizedAtVotingStation,allowedToVote=allowedToVote,photographedBallot=photographedBallot,cursor=cursor)
+		return render_template('search.html', error=error,searchResults=searchResults,commune=commune,unauthorizedAtVotingStation=unauthorizedAtVotingStation,allowedToVote=allowedToVote,photographedBallot=photographedBallot,cursor=cursor)
 
 if __name__ == '__main__':
 	app.run()

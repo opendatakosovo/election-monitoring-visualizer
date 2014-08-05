@@ -104,11 +104,10 @@ def search():
 		polling_station = request.args.get('pollingStation', '')
 		ultra_violet_control = request.args.get('ultraVioletControl', '')
 		finger_sprayed = request.args.get('fingerSprayed', '')
-		photographedBallot = request.args.get('photographedBallot', '')
 		
 		#print commune, ultraVioletControl, photographedBallot
 		
-		cursor=mongo.db.localelectionsfirstround2013.find({ "$and" : [
+		cursor = mongo.db.localelectionsfirstround2013.find({ "$and" : [
 													{"pollingStation.commune" : commune},
 													{"pollingStation.name":polling_station},
 													{"votingProcess.voters.ultraVioletControl" : ultra_violet_control},
@@ -116,10 +115,8 @@ def search():
 												 ]})
 													
 
-		searchResults = []	
-		for doc in cursor:
-			json_doc = json.dumps(doc, default=json_util.default)
-			searchResults.append(json_doc)
+		searchResults = dict((record['_id'], record) for record in cursor)
+		
 
 		return render_template('search.html', error=error,searchResults=searchResults)
 

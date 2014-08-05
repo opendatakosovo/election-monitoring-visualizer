@@ -40,7 +40,15 @@ to show it instantly on search
  
 <!-- import jQuery file -->
 <script type='text/javascript' src='js/jquery-1.4.2.min.js'></script>
- {{ searchResults }}
+ 
+	
+
+		{% for k in searchResults.keys() %}
+<a href="http://127.0.0.1:5000/observation/{{searchResults[k]['pollingStation']['commune']}}">{{searchResults[k]['pollingStation']['commune']}}</a>
+<a href="http://127.0.0.1:5000/observation/{{searchResults[k]['pollingStation']['commune']}}/{{searchResults[k]['pollingStation']['name']}}">{{searchResults[k]['pollingStation']['name']}}</a> <br>
+		{%endfor%}
+
+
 <script type = "text/javascript">
 $(document).ready(function(){
     //load the current contents of search result
@@ -58,7 +66,7 @@ function showValues() {
  //loader will be show until result from //search_results.php is shown 
 $('#s-results').html('<p><img src="images/ajax-loader.gif" />
 	</p>'); //this will pass the form input 
-$.post('search_results.php', { name: form.name.value }, //then print the result function(result){ $('#s-results').html(result).show(); }); } });
+$.post('http://127.0.0.1:5000/search', { name: form.name.value }, //then print the result function(result){ $('#s-results').html(result).show(); }); } });
 </script>
 
 </body>

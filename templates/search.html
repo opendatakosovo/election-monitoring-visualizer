@@ -13,19 +13,18 @@ to show it instantly on search
  
 <form name = "form">
      
-    <div>Enter name then click the Search Button or just press Enter</div>
+    <div>Search the KDI MongoDB Database with different parameters</div>
      
     <!-- where our search value will be entered -->
-	<input type="text" name="commune"/>
-	<select name="unauthorizedAtVotingStation">
-  		<option value="True">True</option>
-  		<option value="False">False</option>
+	Commune Name:<input type="text" name="commune"/> PollingStation Name:<input type="text" name="pollingStation"/> <br>
+	Ultra Violet Control:<select name="ultraVioletControl">
+  		<option value="always">Always</option>
+  		<option value="never">Never</option>
      </select>
-	<select name="allowedToVote">
-  		<option value="True">True</option>
-  		<option value="False">False</option>
+	Finger Sprayed:<select name="fingerSprayed">
+  		<option value="always">Always</option>
+  		<option value="never">Never</option>
      </select>
-	<label><input type='checkbox' name="photographedBallot"> Cheese</label>
 	<select name="photographedBallot">
   		<option value="True">True</option>
   		<option value="False">False</option>
@@ -41,9 +40,7 @@ to show it instantly on search
  
 <!-- import jQuery file -->
 <script type='text/javascript' src='js/jquery-1.4.2.min.js'></script>
- {% for s in searchResults %}
-	{{s}}
- {% endfor %}
+ {{ searchResults }}
 <script type = "text/javascript">
 $(document).ready(function(){
     //load the current contents of search result

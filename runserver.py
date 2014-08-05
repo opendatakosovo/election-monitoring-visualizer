@@ -98,22 +98,30 @@ def observations(commune):
 
 
 @app.route('/search/', methods=['POST', 'GET'])
-def login():
+def search():
 		error = None
 		commune = request.args.get('commune', '')
-		unauthorizedAtVotingStation=request.args.get('unauthorizedAtVotingStation', '')
-		allowedToVote = request.args.get('allowedToVote', '')
+		polling_station = request.args.get('pollingStation', '')
+		ultra_violet_control = request.args.get('ultraVioletControl', '')
+		finger_sprayed = request.args.get('fingerSprayed', '')
 		photographedBallot = request.args.get('photographedBallot', '')
-		cursor=mongo.db.localelectionsfirstround2013.find({ "$and": [ {"pollingStation.commune":commune},{ "irregularities.unauthorizedPersonsStayedAtTheVotingStation" : unauthorizedAtVotingStation }, { "irregularities.allowedToVote": allowedToVote},{"irregularities.photographedBallot":photographedBallot}] })
+		
+		#print commune, ultraVioletControl, photographedBallot
+		
+		cursor=mongo.db.localelectionsfirstround2013.find({ "$and" : [
+													{"pollingStation.commune" : commune},
+													{"pollingStation.name":polling_station},
+													{"votingProcess.voters.ultraVioletControl" : ultra_violet_control},
+													{"votingProcess.voters.fingerSprayed" : finger_sprayed}
+												 ]})
+													
 
-		searchResults = json.loads(cursor)		
+		searchResults = []	
 		for doc in cursor:
 			json_doc = json.dumps(doc, default=json_util.default)
 			searchResults.append(json_doc)
-		# the code below is executed if the request method
-   	 	# was GET or the credentials were invalid
 
-		return render_template('search.html', error=error,searchResults=searchResults,commune=commune,unauthorizedAtVotingStation=unauthorizedAtVotingStation,allowedToVote=allowedToVote,photographedBallot=photographedBallot,cursor=cursor)
+		return render_template('search.html', error=error,searchResults=searchResults)
 
 if __name__ == '__main__':
 	app.run()

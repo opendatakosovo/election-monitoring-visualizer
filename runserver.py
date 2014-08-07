@@ -67,6 +67,27 @@ def observation(commune, polling_station_name):
 
 	return render_template('observation.html', kvvMGD = kvv_json,votesByHour = votes_by_hour_json)
 
+@app.route('/observation/<string:commune>/<string:polling_station_name>/<string:room_number>', methods=['GET'])
+def observation_by_room(commune, polling_station_name,room_number):
+
+	commune = commune.replace(' ', '%20')
+	polling_station_name = polling_station_name.replace(' ', '%20')
+	
+	#URL to request from KDI API for KVV MEMBERS GENDER DISTRIBUTION
+	url = '%s/kvv-members-gender-distribution/2013/local-elections/first-round/%s/%s/%s' % (kdi_api_url, commune, polling_station_name,room_number)
+	# Open the JSON Document requested from the EMA
+	kvv_response = urlopen(url).read()
+	# Convert JSON into a Dictionary
+	kvv_json=json.loads(kvv_response)
+
+	#URL to request from KDI API for VOTES COUNT BY HOUR
+	url1 = '%s/votes-count/2013/local-elections/first-round/%s/%s/%s' % (kdi_api_url, commune, polling_station_name,room_number)
+	# Open the JSON Document requested from the EMA
+	votes_by_hour_response = urlopen(url1).read()
+	# Convert JSON into a Dictionary
+	votes_by_hour_json=json.loads(votes_by_hour_response)
+
+	return render_template('observation.html', kvvMGD = kvv_json,votesByHour = votes_by_hour_json)
 
 
 @app.route('/api/observations/<string:commune>/<string:polling_station_name>', methods=['GET'])

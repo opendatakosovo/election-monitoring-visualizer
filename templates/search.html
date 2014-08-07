@@ -37,7 +37,7 @@ to show it instantly on search
 <script type='text/javascript' src='js/jquery-1.4.2.min.js'></script>
 
 
-	<table style="width:900px">
+	<table class="table table-bordered" style="width:900px">
 		<tr>
 			  <th>Commune</th>
 			  <th>Polling Station Name</th> 
@@ -47,11 +47,17 @@ to show it instantly on search
 		</tr>
 			<tr>
 				<td><a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}">{{k['pollingStation']['commune']}}</a></td>
-				<td><a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}">
+				<td>
+<a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}">
 
-				{{k['pollingStation']['name']}}</a></td>
+				{{k['pollingStation']['name']}}
+</a></td>
 				<td>{{k['pollingStation']['number']}}</td>
-				<td>{{k['pollingStation']['roomNumber']}}</td>
+				<td>
+<a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}/{{k['pollingStation']['roomNumber']}}">
+
+				{{k['pollingStation']['roomNumber']}}
+</a></td>
 			</tr>
 		  {%endfor%}
 	</table>

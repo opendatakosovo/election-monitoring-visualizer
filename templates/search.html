@@ -1,8 +1,5 @@
-<html>
-<head>
-    <title>Searching Without Page Refresh</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block body %}
 <!-- 
 we will preload the loader image 
 to show it instantly on search 
@@ -16,7 +13,8 @@ to show it instantly on search
     <div>Search the KDI MongoDB Database with different parameters</div>
      
     <!-- where our search value will be entered -->
-	Commune Name:<input type="text" name="commune"/> PollingStation Name:<input type="text" name="pollingStation"/> <br>
+	Commune Name:<input type="text" name="commune"/> 
+	PollingStation Name:<input type="text" name="pollingStation"/> <br>
 	Ultra Violet Control:<select name="ultraVioletControl">
   		<option value="always">Always</option>
   		<option value="never">Never</option>
@@ -25,10 +23,7 @@ to show it instantly on search
   		<option value="always">Always</option>
   		<option value="never">Never</option>
      </select>
-	<select name="photographedBallot">
-  		<option value="True">True</option>
-  		<option value="False">False</option>
-     </select>
+	
 	
     <!-- This button will call our JavaScript Search functions -->
     <input type="submit" value="Search" id="search-btn" />
@@ -40,15 +35,26 @@ to show it instantly on search
  
 <!-- import jQuery file -->
 <script type='text/javascript' src='js/jquery-1.4.2.min.js'></script>
- 
-	
-
-		{% for k in searchResults.keys() %}
-<a href="http://127.0.0.1:5000/observation/{{searchResults[k]['pollingStation']['commune']}}">{{searchResults[k]['pollingStation']['commune']}}</a>
-<a href="http://127.0.0.1:5000/observation/{{searchResults[k]['pollingStation']['commune']}}/{{searchResults[k]['pollingStation']['name']}}">{{searchResults[k]['pollingStation']['name']}}</a> <br>
-		{%endfor%}
 
 
+	<table style="width:900px">
+		<tr>
+			  <th>Commune</th>
+			  <th>Polling Station Name</th> 
+			  <th>Polling Station Number</th>
+			  <th>Polling Station Room Number</th>
+		  {% for k in searchResults %}
+		</tr>
+			<tr>
+				<td><a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}">{{k['pollingStation']['commune']}}</a></td>
+				<td><a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}">
+
+				{{k['pollingStation']['name']}}</a></td>
+				<td>{{k['pollingStation']['number']}}</td>
+				<td>{{k['pollingStation']['roomNumber']}}</td>
+			</tr>
+		  {%endfor%}
+	</table>
 <script type = "text/javascript">
 $(document).ready(function(){
     //load the current contents of search result
@@ -69,5 +75,4 @@ $('#s-results').html('<p><img src="images/ajax-loader.gif" />
 $.post('http://127.0.0.1:5000/search', { name: form.name.value }, //then print the result function(result){ $('#s-results').html(result).show(); }); } });
 </script>
 
-</body>
-</html>
+{% endblock %}

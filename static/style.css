@@ -1,0 +1,11 @@
+.body{
+}
+
+#header{
+	height:300px;
+	background-color:gray;
+}
+#footer{
+	height:300px;
+	background-color:blue;
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+	<head>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script type="text/javascript" src="/static/Chartjs/Chart.js"></script>
+		<script type="text/javascript" src="/static/jQuery/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="/static/election-monitoring-visualizer.js"></script>
+		
+		<link href="http://127.0.0.1:5000/static/style.css" rel="stylesheet" media="screen">
+  		  <!-- Bootstrap -->
+		<link href="http://127.0.0.1:5000/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	</head>
+	<body class="container">
+		<div id="menu" style="padding-left:300px; background-color:black;">
+				<a class="btn btn-inverse" href="http://127.0.0.1:5000/">Home</a>
+				<a class="btn btn-inverse" href="http://127.0.0.1:5000/search">Search</a>
+				<a class="btn btn-inverse" href="#">GitHub</a>
+				<a class="btn btn-inverse" href="#">Assemblio Web Site</a>
+		</div>
+			
+			<h1 class="center">Election Monitoring Visualizer</h1>
+
+		{% block body %}
+		{% endblock %}
+	
+		<div id="footer-menu" style="height:50px; margin-top:100px;padding-left:300px;background-color:black;">
+				<a class="btn btn-inverse" href="http://127.0.0.1:5000/">Home</a>
+				<a class="btn btn-inverse" href="http://127.0.0.1:5000/search">Search</a>
+				<a class="btn btn-inverse" href="#">GitHub</a>
+				<a class="btn btn-inverse" href="#">Assemblio Web Site</a>
+			<p>Developed by Assemblio LLC</p>
+		</div>
+
+	</div>
+	</body>
+
+</html>

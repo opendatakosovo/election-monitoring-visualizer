@@ -1,14 +1,8 @@
-<!doctype html>
-<html>
-	<head>
+{% extends "layout.html" %}
+	{% block body %}
 		<script>
 			var pollingStationGroupedByCommuneJson = {{ polling_station_grouped_by_commune_dict|tojson}};
 		</script>
-		<script type="text/javascript" src="/static/jQuery/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<script type="text/javascript" src="/static/election-monitoring-visualizer.js"></script>
-	</head>
-	<body>
 		<select id="commune_select">
 		</select>
 
@@ -18,8 +12,4 @@
 		<br/><br/><br/>
 		<div id="dataVisualizationContainer"/>
 		</div>
-
-
-	</body>
-
-</html>
+	{% endblock %}

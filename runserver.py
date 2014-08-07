@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, Response
 import flask
+import requests
 from flask.ext.pymongo import PyMongo
 from flask import request
 import pymongo
@@ -97,28 +98,22 @@ def observations(commune):
 	return render_template('observation.html',kvvMGD = kvvMGD,votesByHour = votes_by_hour)
 
 
-@app.route('/search/', methods=['POST', 'GET'])
+@app.route('/search/', methods=['GET'])
 def search():
-		error = None
-		commune = request.args.get('commune', '')
-		polling_station = request.args.get('pollingStation', '')
-		ultra_violet_control = request.args.get('ultraVioletControl', '')
-		finger_sprayed = request.args.get('fingerSprayed', '')
-		
-		#print commune, ultraVioletControl, photographedBallot
-		
-		cursor = mongo.db.localelectionsfirstround2013.find({ "$and" : [
-													{"pollingStation.commune" : commune},
-													{"pollingStation.name":polling_station},
-													{"votingProcess.voters.ultraVioletControl" : ultra_violet_control},
-													{"votingProcess.voters.fingerSprayed" : finger_sprayed}
-												 ]})
-													
-
-		searchResults = dict((record['_id'], record) for record in cursor)
+		error=None
+		commune = request.args.get('commune')
+		polling_station = request.args.get('pollingStation')
+		ultra_violet_control = request.args.get('ultraVioletControl')
+		finger_sprayed = request.args.get('fingerSprayed')
 		
 
-		return render_template('search.html', error=error,searchResults=searchResults)
+		#print commune,polling_station, ultra_violet_control
+		url = 'http://127.0.0.1:5001/kdi/observations/search/2013/local-elections/first-round/?commune=%s&pollingStation=%s&ultraVioletControl=%s&fingerSprayed=%s'%(commune,polling_station,ultra_violet_control,finger_sprayed)
+
+		searchi= requests.get(url)
+		searchResults=searchi.json()
+
+		return render_template('search.html',error=error,searchResults=searchResults)
 
 if __name__ == '__main__':
 	app.run()

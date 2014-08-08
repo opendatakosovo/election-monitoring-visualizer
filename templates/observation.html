@@ -5,38 +5,14 @@
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-	["Number of votes by hour", "Time" ],
-        ["10:00",  {{votesByHour['result'][0]['tenAM']}} ],
-	["13:00", {{votesByHour['result'][0]['onePM']}} ],
-	["16:00", {{votesByHour['result'][0]['sevenPM']}} ],
-	["19:00", {{votesByHour['result'][0]['fourPM']}} ]
+	["Number of votes by hour", "Time" , { role: "style" } ],
+        ["10:00",  {{votesByHour['result'][0]['tenAM']}}, "Green" ],
+	["13:00", {{votesByHour['result'][0]['onePM']}}, "Green" ],
+	["16:00", {{votesByHour['result'][0]['sevenPM']}}, "Green" ],
+	["19:00", {{votesByHour['result'][0]['fourPM']}}, "Green" ]
       ]);
 
-         var options = {
-          title: 'Number of votes by hour',
-			is3D: true,
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('columnchart_values'));
-        chart.draw(data, options);
-      }
-</script>
-<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
-	
-
-<script type="text/javascript">
-
-    google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawChart);
-    function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-	["Observators in PollingStation, distributed by gender", "Gender", { role: "style" } ],
-       
-	["Male", {{ kvvMGD['result'][0]['total'] - kvvMGD['result'][0]['totalFemale'] }}, "gold"],
-	["Female", {{ kvvMGD['result'][0]['totalFemale'] }}, "pink"]
-      ]);
-
-      var view = new google.visualization.DataView(data);
+         var view = new google.visualization.DataView(data);
       view.setColumns([0, 1,
                        { calc: "stringify",
                          sourceColumn: 1,
@@ -45,15 +21,38 @@
                        2]);
 
       var options = {
-	title: "Observators in PollingStation, distributed by gender",
+	title: "Number of votes by hour",
 	width: 600,
 	height: 400,
+	is3D: true,
 	bar: {groupWidth: "95%"},
         legend: { position: "none" },
       };
-      var chart = new google.visualization.ColumnChart(document.getElementById("chartByGender"));
-      chart.draw(view, options);
-  }
+       var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_values'));
+        chart.draw(data, options);
+      }
 </script>
+
+<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
+
+ <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ["Observators in PollingStation, distributed by gender", "Gender"],
+          ["Male",     {{ kvvMGD['result'][0]['total'] - kvvMGD['result'][0]['totalFemale'] }}],
+          ["Female",     {{ kvvMGD['result'][0]['totalFemale'] }}]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('chartByGender'));
+        chart.draw(data, options);
+      }
+    </script>
+
 <div id="chartByGender" style="width: 900px; height: 300px;"></div>
 {% endblock %}

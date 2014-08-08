@@ -126,7 +126,6 @@ def search():
 		polling_station = request.args.get('pollingStation')
 		ultra_violet_control = request.args.get('ultraVioletControl')
 		finger_sprayed = request.args.get('fingerSprayed')
-		
 
 		#print commune,polling_station, ultra_violet_control
 		url = 'http://127.0.0.1:5001/kdi/observations/search/2013/local-elections/first-round/?commune=%s&pollingStation=%s&ultraVioletControl=%s&fingerSprayed=%s'%(commune,polling_station,ultra_violet_control,finger_sprayed)

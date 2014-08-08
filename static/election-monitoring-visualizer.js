@@ -17,7 +17,7 @@ function drawKvvMembersPieChart(index, kvvMembers){
 	// create div container for the pie chart
 	// e.g. <div id="kvvMembersPieChart" style="width: 900px; height: 500px;"></div>
 	var chartContainerDivId = 'kvvMembersPieChart-' + index;
-	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "' style='width: 900px; height: 500px;'></div>");
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "'  class='kvvMembersPieChart'></div>");
 
 	var kvvMembersMale = kvvMembersTotal - kvvMembersFemale;
 
@@ -40,7 +40,7 @@ function drawKvvMembersPieChart(index, kvvMembers){
 function drawIrregularitiesTable(index, irregularities){
 
 	var chartContainerDivId = 'irregularities-' + index;
-	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "'></div>");
+	$("#dataVisualizationContainer").append("<div class='tables'>").append("<div id='" + chartContainerDivId + "' class='irregularities'></div>");
 
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Irregularity');
@@ -59,7 +59,6 @@ function drawIrregularitiesTable(index, irregularities){
     ]);
 
 	var options = {
-	  	width: '450px'
 	};
 
 
@@ -89,7 +88,7 @@ function drawHowManyVotedByBarChart(index,voters){
 
 	// create div container for the bar chart
 	var chartContainerDivId = 'votersByHourBarChart-' + index;
-	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "' style='width: 900px; height: 500px;'></div>");
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "'  class='votersByHourBarChart'></div>");
 
 	var data = google.visualization.arrayToDataTable([
 		['Hour', 'Value',{ role: "style" }],
@@ -122,7 +121,7 @@ function drawVotingProcessTable(index, votingProcess){
 	
 
 	var chartContainerDivId = 'votingProcess-' + index;
-	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "'></div>");
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "' class='votingProcess'></div>");
 
 	var ultraControl= votingProcess.ultraVioletControl;
 	var fingerSprayed =votingProcess.fingerSprayed;
@@ -140,7 +139,6 @@ function drawVotingProcessTable(index, votingProcess){
     ]);
 
 	var options = {
-	  	width: '450px'
 	};
 
 
@@ -154,8 +152,8 @@ function drawMissingMaterialTable(index, missingMaterial){
 		
 
 	var chartContainerDivId = 'missingMaterial-' + index;
-	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "'></div>");
-
+	$("#dataVisualizationContainer").append("<div id='" + chartContainerDivId + "' class='missingMaterial'></div>");
+	
 	var ballotBox = missingMaterial.ballotBox;
 	var votersBook = missingMaterial.votersBook;
 	var spray = missingMaterial.spray;
@@ -224,23 +222,25 @@ function visualizeData(communeName, pollingStationName){
 		drawPollingStationInfo(data[0].pollingStation);
 
 		$.each(data, function(index, observation) {
-			var roomNumer =  observation.pollingStation.roomNumber;
-			drawSectionHeader(index, roomNumer);
-
+	
 			var kvvMembers = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers;
 			drawKvvMembersPieChart(index, kvvMembers);
 
-			var irregularities = observation.irregularities;
-			drawIrregularitiesTable(index, irregularities);
-			
+			var roomNumer =  observation.pollingStation.roomNumber;
+			drawSectionHeader(index, roomNumer);
+
 			var voters = observation.votingProcess.voters.howManyVotedBy;
 			drawHowManyVotedByBarChart(index, voters);
 			
+			var irregularities = observation.irregularities;
+			drawIrregularitiesTable(index, irregularities);
+
 			var votingProcess= observation.votingProcess.voters;
 			drawVotingProcessTable(index, votingProcess);
 
 			var missingMaterial= observation.preparation.missingMaterial;
 			drawMissingMaterialTable(index, missingMaterial); 
+			
 		});
 		
 	});

@@ -1,0 +1,12 @@
+[Application]
+USERNAME =
+PASSWORD =
+SERVER_PORT = 5000
+SECRET_KEY =
+
+[Mongo]
+DB_NAME = kdi
+
+[Logging]
+PATH =
+LEVEL = 

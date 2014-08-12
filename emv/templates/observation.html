@@ -6,7 +6,7 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
 	["Number of votes by hour", "Time" , { role: "style" } ],
-        ["10:00",  {{votesByHour['result'][0]['tenAM']}}, "Green" ],
+    ["10:00", {{votesByHour['result'][0]['tenAM']}}, "Green" ],
 	["13:00", {{votesByHour['result'][0]['onePM']}}, "Green" ],
 	["16:00", {{votesByHour['result'][0]['sevenPM']}}, "Green" ],
 	["19:00", {{votesByHour['result'][0]['fourPM']}}, "Green" ]

@@ -1,7 +1,7 @@
 .body{
 }
 #dataVisualizationContainer{
-	height:1600px;
+	height:1300px;
 }
 #menu{
 	padding-left:300px; 

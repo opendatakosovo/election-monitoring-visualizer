@@ -47,15 +47,15 @@ to show it instantly on search
 		  {% for k in searchResults %}
 		</tr>
 			<tr>
-				<td><a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}">{{k['pollingStation']['commune']}}</a></td>
+				<td><a href="http://127.0.0.1:5000/{{k['pollingStation']['commune']}}">{{k['pollingStation']['commune']}}</a></td>
 				<td>
-<a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}">
+<a href="http://127.0.0.1:5000/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}">
 
 				{{k['pollingStation']['name']}}
 </a></td>
 				<td>{{k['pollingStation']['number']}}</td>
 				<td>
-<a href="http://127.0.0.1:5000/observation/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}/{{k['pollingStation']['roomNumber']}}">
+<a href="http://127.0.0.1:5000/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}/{{k['pollingStation']['roomNumber']}}">
 
 				{{k['pollingStation']['roomNumber']}}
 </a></td>

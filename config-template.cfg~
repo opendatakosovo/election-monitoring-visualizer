@@ -1,0 +1,12 @@
+[Application]
+USERNAME = admin
+PASSWORD = admin
+SERVER_POR = 8082
+SECRET_KEY = APP_KEY
+
+[Mongo]
+DB_NAME = kdi
+
+[Logging]
+PATH = /logs
+LEVEL = 

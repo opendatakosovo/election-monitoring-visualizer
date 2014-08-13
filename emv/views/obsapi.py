@@ -1,10 +1,10 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, Response
 from flask.views import MethodView
 from emv import mongo
 from flask.ext.pymongo import PyMongo
 from collections import OrderedDict
 import pymongo
-import bson
+from bson import json_util
 import json
 
 class ObservationsApi(MethodView):

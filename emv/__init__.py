@@ -76,7 +76,7 @@ def register_url_rules(app):
 	app.add_url_rule('/search/', view_func=Search.as_view('search'))
 
 	# Search api for specific commune or polling station observations.
-	app.add_url_rule('/api/observations/<string:commune>/<string:polling_station_name>', view_func=Search.as_view('obsapi'))
+	app.add_url_rule('/api/observations/<string:commune>/<string:polling_station_name>', view_func=ObservationsApi.as_view('obsapi'))
 
 	# Show observations for specific commune,pollingStationName or roomNumber
 	app.add_url_rule('/observations/<string:commune>', view_func=Commune.as_view('commune'),methods=['GET'])

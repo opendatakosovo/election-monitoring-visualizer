@@ -9,15 +9,11 @@ class Search(View):
 	methods=['GET']
 	def dispatch_request(self):
 		error=None
-		commune = request.args.get('commune')
-		polling_station = request.args.get('pollingStation')
-		ultra_violet_control = request.args.get('ultraVioletControl')
-		finger_sprayed = request.args.get('fingerSprayed')
-
-		#print commune,polling_station, ultra_violet_control
-		url = 'http://127.0.0.1:5001/kdi/observations/search/2013/local-elections/first-round/?commune=%s&pollingStation=%s&ultraVioletControl=%s&fingerSprayed=%s'%(commune,polling_station,ultra_violet_control,finger_sprayed)
-
-		searchi= requests.get(url)
-		searchResults=searchi.json()
+		#Test if the method is GET
+		if request.method =='GET':		
+			#Pass the values to the API
+			url = 'http://127.0.0.1:5001/kdi/observations/search/2013/local-elections/first-round/?commune=%s&pollingStation=%s&ultraVioletControl=%s&fingerSprayed=%s'%(request.args.get('commune'),request.args.get('pollingStation'),request.args.get('ultraVioletControl'),request.args.get('fingerSprayed'))
+			# Request the JSON Document from the URL Results
+			searchResults= requests.get(url).json()
 
 		return render_template('search.html',error=error,searchResults=searchResults)

@@ -68,7 +68,10 @@ def load_config(app):
 
 def configure_logging(app):
 	
+	# Get the path of the log from the config
 	log_path = app.config['LOG_PATH']
+	
+	# Get the level of logging from the config
 	log_level = app.config['LOG_LEVEL']
 
 	# If path directory doesn't exist, create it.
@@ -76,13 +79,22 @@ def configure_logging(app):
 	if not os.path.exists(log_dir):
 		os.makedirs(log_dir)
 
+	# Create formatter
 	formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+	
+	# Create Log_Handler
 	log_handler = RotatingFileHandler(log_path, maxBytes=250000, backupCount=5)
+
+	# add formatter to log handler
 	log_handler.setFormatter(formatter)
 
-	# add the handlers to the logger
+	# Get the level of the Debug and set it to the logger
 	app.logger.setLevel(log_level)
+
+	# Add the handlers to the logger
 	app.logger.addHandler(log_handler)
+	
+	# Test if the logging is working by typing this string to a file.
 	app.logger.info('Logging to: %s', log_path)
 	
 

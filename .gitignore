@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+config.cfg
 
 # C extensions
 *.so
@@ -25,6 +26,12 @@ venv/
 *.py~
 *.html~
 *.js~
+
+#Config Files
+config.cfg
+
+#Log Files
+logs
 
 # Installer logs
 pip-log.txt

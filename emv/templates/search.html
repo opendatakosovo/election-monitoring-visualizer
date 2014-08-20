@@ -38,16 +38,25 @@ to show it instantly on search
 <script type='text/javascript' src='js/jquery-1.4.2.min.js'></script>
 
 
-	<table class="table table-bordered" style="width:900px">
-		<tr>
-			  <th>Commune</th>
+
+
+{{ pagination.info|safe }}
+{{ pagination.links|safe }}
+<table  class="table table-bordered" style="width:900px">
+  <thead>
+    <tr>
+			  <th>Nr</th>
+ 			  <th>Commune</th>
 			  <th>Polling Station Name</th> 
 			  <th>Polling Station Number</th>
 			  <th>Polling Station Room Number</th>
-		  {% for k in searchResults %}
-		</tr>
-			<tr>
-				<td><a href="http://127.0.0.1:5000/observations/{{k['pollingStation']['commune']}}">{{k['pollingStation']['commune']}}</a></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for k in searchResults %}
+      <tr>
+			<td>{{ loop.index }}</td>
+        	<td><a href="http://127.0.0.1:5000/observations/{{k['pollingStation']['commune']}}">{{k['pollingStation']['commune']}}</a></td>
 				<td>
 <a href="http://127.0.0.1:5000/observations/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}">
 
@@ -59,9 +68,13 @@ to show it instantly on search
 
 				{{k['pollingStation']['roomNumber']}}
 </a></td>
-			</tr>
-		  {%endfor%}
-	</table>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{{ pagination.links|safe }}
+{{ pagination.info|safe }}
+
 <script type = "text/javascript">
 $(document).ready(function(){
     //load the current contents of search result
@@ -81,5 +94,8 @@ $('#s-results').html('<p><img src="images/ajax-loader.gif" />
 	</p>'); //this will pass the form input 
 $.post('http://127.0.0.1:5000/search', { name: form.name.value }, //then print the result function(result){ $('#s-results').html(result).show(); }); } });
 </script>
+
+
+
 
 {% endblock %}

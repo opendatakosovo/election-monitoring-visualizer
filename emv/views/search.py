@@ -4,6 +4,10 @@ from urllib2 import Request, urlopen, URLError
 import json
 from bson import json_util
 import requests
+from flask import Blueprint
+from flask.ext.paginate import Pagination
+
+mod = Blueprint('searchResults', __name__)
 
 class Search(View):	
 	methods=['GET']
@@ -16,4 +20,29 @@ class Search(View):
 			# Request the JSON Document from the URL Results
 			searchResults= requests.get(url).json()
 
-		return render_template('search.html',error=error,searchResults=searchResults)
+		ITEMS_PER_PAGE=10
+		
+		search=False
+
+		q = request.args.get('q')
+
+		if q:
+		    search = True
+		try:
+			page = int(request.args.get('page', 1))
+		except ValueError:
+
+			page = 1
+
+		scount=0
+
+		for searchCount in searchResults:
+			scount+=1
+
+		pagination = Pagination( total=scount,page=page,search=False,record_name='search', per_page=ITEMS_PER_PAGE,alignment="centered")
+
+
+		return render_template('search.html',error=error,searchResults=searchResults,search=search,pagination=pagination)
+
+
+

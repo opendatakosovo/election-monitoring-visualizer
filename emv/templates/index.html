@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
-	{% block body %}
-		<script>
-			var pollingStationGroupedByCommuneJson = {{ polling_station_grouped_by_commune_dict|tojson}};
-		</script>
-		<select id="commune_select">
-		</select>
+{% block body %}
+	<script>
+		var pollingStationGroupedByCommuneJson = {{ polling_station_grouped_by_commune_dict|tojson}};
+	</script>
+	<select id="commune_select">
+	</select>
 
-		<select id="polling_station_select">
-		</select>
+	<select id="polling_station_select">
+	</select>
 
-		<br/><br/><br/>
-		<div id="dataVisualizationContainer"/>
-		</div>
-	{% endblock %}
+	<br/><br/><br/>
+	<div id="dataVisualizationContainer">
+	</div>
+{% endblock %}

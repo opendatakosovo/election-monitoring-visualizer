@@ -1,5 +1,30 @@
-.body{
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
 }
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 80px;
+}
+
+.push-for-footer{
+  height: 80px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 80px;
+  background-color: #f5f5f5;
+}
+
+/* Other styles
+-------------------------------------------------- */
+
 #dataVisualizationContainer{
 	height:1300px;
 }

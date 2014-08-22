@@ -1,39 +1,50 @@
 <!doctype html>
 <html>
 	<head>
-		
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script type="text/javascript" src="/static/Chartjs/Chart.js"></script>
-		<script type="text/javascript" src="/static/jQuery/jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-		<script type="text/javascript" src="/static/election-monitoring-visualizer.js"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='jQuery/jquery-1.11.1.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='election-monitoring-visualizer.js') }}"></script>
 		
-		<link href="http://127.0.0.1:5000/static/style.css" rel="stylesheet" media="screen">
-  		  <!-- Bootstrap -->
-		<link href="http://127.0.0.1:5000/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+
+		<title>Election Monitoring Visualiser</title>
 	</head>
-	<body class="container">
-		<div id="menu" style="padding-left:300px; background-color:black;">
-				<a class="btn btn-inverse" href="http://127.0.0.1:5000/">Home</a>
-				<a class="btn btn-inverse" href="http://127.0.0.1:5000/search">Search</a>
-				<a class="btn btn-inverse" href="#">GitHub</a>
-				<a class="btn btn-inverse" href="#">Assemblio Web Site</a>
-		</div>
-			
-			<h1 class="center">Election Monitoring Visualizer</h1>
 
-		{% block body %}
-		{% endblock %}
-	
-		<div id="footer-menu" >
-				<a class="btn btn-inverse" href="http://127.0.0.1:5000/">Home</a>
-				<a class="btn btn-inverse" href="http://127.0.0.1:5000/search">Search</a>
-				<a class="btn btn-inverse" href="#">GitHub</a>
-				<a class="btn btn-inverse" href="#">Assemblio Web Site</a>
-			<p>Developed by Assemblio LLC</p>
+	<body>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">Election Monitoring Visualiser</a>
+				</div>
+
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/">Home</a></li>
+						<li><a href="/search">Search</a></li>
+						<li><a href="/">API</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container" style="padding-top:15px;">
+			{% block body %}{% endblock %}
 		</div>
 
-	</div>
+		<div class="push-for-footer"></div>
+
+		<div class="footer">
+			<div class="footer-container" align="center">
+				<p class="text-muted">
+					<br/>Made in Kosovo by <a href="http://assemblio.com" target="_blank">Assemblio LLC</a> with open data from <a href="http://opendatakosovo.org" target="_blank">Open Data Kosovo</a>.
+					<br/>Source code available in <a href="https://github.com/opendatakosovo/election-monitoring-visualizer" target="_blank">GitHub</a>.
+					<br/>
+				</p>
+			</div>
+		</div>
 	</body>
 
 </html>

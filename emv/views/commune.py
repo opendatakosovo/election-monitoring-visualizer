@@ -3,13 +3,18 @@ from flask.views import View
 from urllib2 import Request, urlopen, URLError
 import json
 from bson import json_util
+from emv import utils
 
 class Commune(View):	
 	methods = ['GET']
-	def dispatch_request(self,commune):
-		kdi_api_url = 'http://127.0.0.1:5001/api/kdi/observations'
+
+	def dispatch_request(self, observer, year, election_type, election_round, commune):
+
+		# get KDI api url
+		kdi_api_url = utils.get_api_url(observer)
+
 		# Request the JSON Document from the Election-Monitoring-API (shortcut EMA) based on commune
-		url ='%s/kvv-members-gender-distribution/2013/local-elections/first-round/%s' % (kdi_api_url,commune)
+		url ='%s/kvv-members-gender-distribution/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune)
 		# Open the JSON Document requested from the EMA
 		kvvMGD_response = urlopen(url).read()
 		# Convert JSON into a Dictionary
@@ -17,7 +22,7 @@ class Commune(View):
 
 
 		# Request the JSON Document from the Election-Monitoring-API (shortcut EMA) based on commune
-		url1 ='%s/votes-count/2013/local-elections/first-round/%s' % (kdi_api_url,commune)
+		url1 ='%s/votes-count/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune)
 		# Open the JSON Document requested from the EMA
 		votes_by_hour_response = urlopen(url1).read()
 		# Convert JSON into a Dictionary

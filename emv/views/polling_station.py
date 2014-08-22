@@ -3,25 +3,31 @@ from flask.views import MethodView
 from urllib2 import Request, urlopen, URLError
 import json
 from bson import json_util
+from emv import utils
 
 class PollingStation(MethodView):
-# FIXME: fix this by creating slug values in database	
-	methods=['GET']
-	def dispatch_request(self, commune, polling_station_name):
-		commune = commune.replace(' ', '%20')
-		polling_station_name = polling_station_name.replace(' ', '%20')
-		kdi_api_url = 'http://127.0.0.1:5001/api/kdi/observations'
+	methods = ['GET']
+
+	def dispatch_request(self, observer, year, election_type, election_round, commune, polling_station_name):
+
+		# get KDI api url
+		kdi_api_url = utils.get_api_url(observer)
+		
 		#URL to request from KDI API for KVV MEMBERS GENDER DISTRIBUTION
-		url = '%s/kvv-members-gender-distribution/2013/local-elections/first-round/%s/%s' % (kdi_api_url, commune, polling_station_name)
+		url = '%s/kvv-members-gender-distribution/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune, polling_station_name)
+
 		# Open the JSON Document requested from the EMA
 		kvv_response = urlopen(url).read()
+
 		# Convert JSON into a Dictionary
 		kvv_json=json.loads(kvv_response)
 
 		#URL to request from KDI API for VOTES COUNT BY HOUR
-		url1 = '%s/votes-count/2013/local-elections/first-round/%s/%s' % (kdi_api_url, commune, polling_station_name)
+		url1 = '%s/votes-count/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune, polling_station_name)
+
 		# Open the JSON Document requested from the EMA
 		votes_by_hour_response = urlopen(url1).read()
+ 
 		# Convert JSON into a Dictionary
 		votes_by_hour_json=json.loads(votes_by_hour_response)
 

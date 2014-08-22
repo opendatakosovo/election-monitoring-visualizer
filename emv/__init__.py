@@ -54,6 +54,8 @@ def load_config(app):
 	# Set up config properties
 	app.config['SERVER_PORT'] = config.get('Application', 'SERVER_PORT')
 
+	app.config['API_KDI'] = config.get('Api', 'KDI')
+
 	app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
 
 	# Logging path might be relative or starts from the root.
@@ -121,6 +123,6 @@ def register_url_rules(app):
 	app.add_url_rule('/api/observations/<string:commune>/<string:polling_station_name>', view_func=ObservationsApi.as_view('obsapi'))
 
 	# Show observations for specific commune,pollingStationName or roomNumber
-	app.add_url_rule('/observations/<string:commune>', view_func=Commune.as_view('commune'),methods=['GET'])
-	app.add_url_rule('/observations/<string:commune>/<string:polling_station_name>', view_func=PollingStation.as_view('polling_station_name'),methods=['GET'])
-	app.add_url_rule('/observations/<string:commune>/<string:polling_station_name>/<string:room_number>/', view_func=RoomNumber.as_view('room_number'),methods=['GET'])
+	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>', view_func=Commune.as_view('commune'),methods=['GET'])
+	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>/<string:polling_station_name>', view_func=PollingStation.as_view('polling_station_name'),methods=['GET'])
+	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>/<string:polling_station_name>/<string:room_number>/', view_func=RoomNumber.as_view('room_number'),methods=['GET'])

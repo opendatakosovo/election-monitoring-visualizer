@@ -1,9 +1,0 @@
-[Application]
-SERVER_PORT = 5001
-
-[Mongo]
-DB_NAME = kdi
-
-[Logging]
-PATH = logs
-LEVEL = DEBUG

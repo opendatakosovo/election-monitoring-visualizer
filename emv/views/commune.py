@@ -16,6 +16,9 @@ class Commune(View):
 		# Request the JSON Document from the Election-Monitoring-API (shortcut EMA) based on commune
 		url ='%s/kvv-members-gender-distribution/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune)
 		# Open the JSON Document requested from the EMA
+
+		print url
+
 		kvvMGD_response = urlopen(url).read()
 		# Convert JSON into a Dictionary
 		kvvMGD = json.loads(kvvMGD_response)

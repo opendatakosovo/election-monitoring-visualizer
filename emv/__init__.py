@@ -9,9 +9,14 @@ from flask import Flask
 from flask.views import View
 from flask.ext.pymongo import PyMongo
 
+from utils.utils import Utils
+
 
 # Create MongoDB database object.
 mongo = PyMongo()
+
+# Create utils instance.
+utils = Utils()
 
 def create_app():
 	''' Create the Flask app.

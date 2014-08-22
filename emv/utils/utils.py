@@ -1,4 +1,4 @@
-import app
+from flask import current_app
 
 class Utils(object):
 
@@ -9,7 +9,7 @@ class Utils(object):
 		''' Generate API URL for given observer.
 		:param observer: a string identifying the election monitoring organization.
 		'''
-		api_domain = app.config['API_KDI']
-		api_url = '%s/api/%s/observations' % (api_domain, observer)
+		api_domain = current_app.config['API_KDI']
+		api_url = '%s/api/%s' % (api_domain, observer)
 
 		return api_url

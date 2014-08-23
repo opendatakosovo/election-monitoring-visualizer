@@ -188,16 +188,18 @@ function drawMissingMaterialTable(index, missingMaterial){
 }
  
 // Initialize polling station name dropdown list
-function initPollingStationDropdown(communeName){
+function initPollingStationDropdown(communeSlug){
 
 	// First clear the polling station drowpown list
 	$('#polling_station_select option').remove();
 
-	$.each(pollingStationGroupedByCommuneJson[communeName], function(index, value) {
+	var pollingStations = pollingStationGroupedByCommuneJson[communeSlug].pollingStations;
+
+	$.each(pollingStations, function(index, obj) {
 		$('#polling_station_select')
 			.append($("<option></option>")
-			.attr("value", value)
-			.text(value)); 
+			.attr("value", obj.slug)
+			.text(obj.name)); 
 	});
 
 	// init data visualization with default data selected
@@ -257,14 +259,14 @@ $(document).ready(function(){
 		$('#commune_select')
 			.append($("<option></option>")
 			.attr("value", idx)
-			.text(idx)); 
+			.text(value.name)); 
 
 		pollingStationDataRetrieved = true;
 	});
 
 	if(pollingStationDataRetrieved){
 		// Initialize polling station name dropdown listin relation to default commune name.
-		initPollingStationDropdown($('#commune_select').find(":selected").text());
+		initPollingStationDropdown($('#commune_select').find(":selected").val());
 
 		// When new communue is selected, re-initialize the polling station name dropdown list.
 		$('#commune_select').change(function(){

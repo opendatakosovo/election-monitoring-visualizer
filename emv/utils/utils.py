@@ -13,3 +13,18 @@ class Utils(object):
 		api_url = '%s/api/%s' % (api_domain, observer)
 
 		return api_url
+
+	def get_collection_name(self, year, election_type, election_round):
+		''' Build String with value set to the collection name
+		
+		:param year: The year of the election
+		:param election_type: The type of the election. Can be local (local-elections) or general (general-elections)
+		:param election_round: The round of the election (e.g. first-round, second-round...)
+		'''
+		
+		election_type = election_type.replace('-', '')
+		election_round = election_round.replace('-', '')
+		
+		collection_name = election_type + election_round + str(year)
+		
+		return collection_name

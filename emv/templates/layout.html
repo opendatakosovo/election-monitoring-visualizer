@@ -5,6 +5,7 @@
 		<script type="text/javascript" src="{{ url_for('static', filename='jQuery/jquery-1.11.1.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='election-monitoring-visualizer.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='election-selection-navbar.js') }}"></script>
 		
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
@@ -20,6 +21,41 @@
 					<a class="navbar-brand" href="/">Election Monitoring Visualiser</a>
 				</div>
 
+				<!-- 
+					Dropdown menu items are Hardcoded for now because we only have one dataset source (KDI).
+					Will be dynamic once we have multiple dataset sources.
+				--> 
+				<div class="collapse navbar-collapse">
+      				<ul class="nav navbar-nav" id="election-selection-navbar">
+						<li class="dropdown election-observer">
+							<a class="dropdown-toggle election-observer" data-toggle="dropdown">Observer <span class="caret"></span></a>
+							<ul class="dropdown-menu election-observer" role="menu">
+								<li><a href="/kdi" id="kdi">Kosova Democratic Institute</a></li>
+							</ul>
+						</li>
+						<li class="dropdown election-year disabled">
+							<a class="dropdown-toggle election-year disabled" data-toggle="dropdown">Year <span class="caret"></span></a>
+							<ul class="dropdown-menu election-year" role="menu">
+								<li><a href="/kdi/2013" id="2013">2013</a></li>
+							</ul>
+						</li>
+						<li class="dropdown election-type disabled">
+							<a class="dropdown-toggle election-type disabled" data-toggle="dropdown">Election Type <span class="caret"></span></a>
+							<ul class="dropdown-menu election-type" role="menu">
+								<li><a href="/kdi/2013/local-elections" id="local-elections">Local Elections</a></li>
+							</ul>
+						</li>
+						<li class="dropdown election-round disabled">
+							<a class="dropdown-toggle election-round disabled" data-toggle="dropdown">Election Round <span class="caret"></span></a>
+							<ul class="dropdown-menu election-round" role="menu">
+								<li><a href="/kdi/2013/local-elections/first-round" id="first-round">First Round</a></li>
+								<li><a href="/kdi/2013/local-elections/second-round" id="first-round">Second Round</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<!--
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="/">Home</a></li>
@@ -27,6 +63,7 @@
 						<li><a href="/">API</a></li>
 					</ul>
 				</div>
+				-->
 			</div>
 		</nav>
 

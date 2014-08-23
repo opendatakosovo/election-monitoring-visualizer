@@ -1,8 +1,5 @@
 google.load("visualization", "1", {packages:["corechart", "table"]});	
 
-function drawPollingStationInfo(pollingStation){
-	$("#dataVisualizationContainer").append("<h1 id='pollingStationInfo'>Observations for polling station '" + pollingStation.name + "'" + " in " + pollingStation.commune + "</h1>");
-}
 
 function drawSectionHeader(index, roomNumber){
 	var containerDivId = 'sectionHeader-' + index;
@@ -106,7 +103,7 @@ function drawHowManyVotedByBarChart(index,voters){
                        2]);
 
 	var options = {
-	  	title: 'How many voted by Hour!',
+	  	title: 'Ballots Casted For Given Hours',
 		is3D: true,
 		bar: {groupWidth: "95%"},
         legend: { position: "none" },
@@ -219,8 +216,6 @@ function visualizeData(communeName, pollingStationName){
 
 	$.get(url, function(data) {
 
-		drawPollingStationInfo(data[0].pollingStation);
-
 		$.each(data, function(index, observation) {
 	
 			var kvvMembers = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers;
@@ -252,30 +247,38 @@ function clearPreviouslyGeneratedDataVisualization(){
 
 $(document).ready(function(){
 
+	pollingStationDataRetrieved = false;
+
 	// Initialize commune name dropdown list.
 	// index is the name of the commune.
 	// value is the name of the polling stations.
-	$.each(pollingStationGroupedByCommuneJson, function(index, value) {
+	$.each(pollingStationGroupedByCommuneJson, function(idx, value) {
 		$('#commune_select')
 			.append($("<option></option>")
-			.attr("value", index)
-			.text(index)); 
+			.attr("value", idx)
+			.text(idx)); 
+
+		pollingStationDataRetrieved = true;
 	});
 
-	// Initialize polling station name dropdown listin relation to default commune name.
-	initPollingStationDropdown($('#commune_select').find(":selected").text());
+	if(pollingStationDataRetrieved){
+		// Initialize polling station name dropdown listin relation to default commune name.
+		initPollingStationDropdown($('#commune_select').find(":selected").text());
 
-	// When new communue is selected, re-initialize the polling station name dropdown list.
-	$('#commune_select').change(function(){
-		initPollingStationDropdown($(this).val())
-	});
+		// When new communue is selected, re-initialize the polling station name dropdown list.
+		$('#commune_select').change(function(){
+			initPollingStationDropdown($(this).val())
+		});
 
-	// When new polling station is selected, open new window that presents data.
-	$('#polling_station_select').change(function(){
+		// When new polling station is selected, open new window that presents data.
+		$('#polling_station_select').change(function(){
 
-		var communeName = $('#commune_select').find(":selected").text();
-		var pollingStationName = $('#polling_station_select').find(":selected").text();
+			var communeName = $('#commune_select').find(":selected").text();
+			var pollingStationName = $('#polling_station_select').find(":selected").text();
 		
-		visualizeData(communeName, pollingStationName);
-	});
+			visualizeData(communeName, pollingStationName);
+		});
+	}else{
+		//TODO: Hide dropdowns
+	}
 });

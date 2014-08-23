@@ -3,13 +3,28 @@
 	<script>
 		var pollingStationGroupedByCommuneJson = {{ polling_station_grouped_by_commune_dict|tojson}};
 	</script>
-	<select id="commune_select">
-	</select>
 
-	<select id="polling_station_select">
-	</select>
+	<div class="polling-station-selection-container">
 
-	<br/><br/><br/>
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="commune_select" class="control-label col-xs-2">Commune</label>
+				<div class="col-xs-3">
+					<select class="form-control" id="commune_select"></select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="polling_station_select" class="control-label col-xs-2">Polling Station</label>
+				<div class="col-xs-3">
+					<select class="form-control" id="polling_station_select"></select>
+				</div>
+			</div>
+		</form>
+
+	</div>
+
+	<br/><br/>
 	<div id="dataVisualizationContainer">
 	</div>
 {% endblock %}

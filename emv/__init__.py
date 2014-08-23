@@ -121,13 +121,19 @@ def register_url_rules(app):
 	# Index page form.
 	app.add_url_rule('/', view_func=Index.as_view('index'))
 
+	# Election selection for observation: observing organization, year, election type and election round.
+	app.add_url_rule('/<string:observer>', view_func=Index.as_view('index_observer'))
+	app.add_url_rule('/<string:observer>/<int:year>', view_func=Index.as_view('index_year'))
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>', view_func=Index.as_view('index_election_type'))
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Index.as_view('index_election_round'))
+
 	# Search for specific commune or polling station observations.
-	app.add_url_rule('/search/', view_func=Search.as_view('search'))
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/search', view_func=Search.as_view('search'))
 
 	# Search api for specific commune or polling station observations.
 	app.add_url_rule('/api/observations/<string:commune>/<string:polling_station_name>', view_func=ObservationsApi.as_view('obsapi'))
 
-	# Show observations for specific commune,pollingStationName or roomNumber
-	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>', view_func=Commune.as_view('commune'),methods=['GET'])
-	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>/<string:polling_station_name>', view_func=PollingStation.as_view('polling_station_name'),methods=['GET'])
-	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>/<string:polling_station_name>/<string:room_number>/', view_func=RoomNumber.as_view('room_number'),methods=['GET'])
+	# Show observations for specific commune, polling station name, or room number.
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>', view_func=Commune.as_view('commune'))
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>/<string:polling_station_name>', view_func=PollingStation.as_view('polling_station_name'))
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>/<string:polling_station_name>/<string:room_number>/', view_func=RoomNumber.as_view('room_number'))

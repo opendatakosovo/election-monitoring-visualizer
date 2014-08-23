@@ -25,8 +25,12 @@ body {
 /* Other styles
 -------------------------------------------------- */
 
+.info-text{
+	font-size: 18px;
+}
+
 #dataVisualizationContainer{
-	height:1300px;
+	/*height:1300px;*/
 }
 #menu{
 	padding-left:300px; 

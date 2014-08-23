@@ -242,6 +242,7 @@ function visualizeData(communeName, pollingStationName){
 }
 
 function clearPreviouslyGeneratedDataVisualization(){
+	$("#appInfoContainer").html('');
 	$("#dataVisualizationContainer").empty();
 }
 

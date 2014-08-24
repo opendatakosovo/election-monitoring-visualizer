@@ -7,13 +7,8 @@ from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask.views import View
-from flask.ext.pymongo import PyMongo
 
 from utils.utils import Utils
-
-
-# Create MongoDB database object.
-mongo = PyMongo()
 
 # Create utils instance.
 utils = Utils()
@@ -32,10 +27,6 @@ def create_app():
 
 	# Register URL rules.
 	register_url_rules(app)
-
-	# Init app for use with this PyMongo
-	# http://flask-pymongo.readthedocs.org/en/latest/#flask_pymongo.PyMongo.init_app
-	mongo.init_app(app, config_prefix='MONGO')
 
 	return app
 
@@ -60,8 +51,6 @@ def load_config(app):
 	app.config['SERVER_PORT'] = config.get('Application', 'SERVER_PORT')
 
 	app.config['API_KDI'] = config.get('Api', 'KDI')
-
-	app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
 
 	# Logging path might be relative or starts from the root.
 	# If it's relative then be sure to prepend the path with the application's root directory path.
@@ -111,7 +100,7 @@ from views.search import Search
 from views.polling_station import PollingStation
 from views.commune import Commune
 from views.room_number import RoomNumber
-from views.obsapi import ObservationsApi
+from views.observation import Observation
 
 def register_url_rules(app):
 	''' Register the URL rules. 
@@ -128,10 +117,10 @@ def register_url_rules(app):
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Index.as_view('index_election_round'))
 
 	# Search for specific commune or polling station observations.
-	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/search', view_func=Search.as_view('search'))
+	app.add_url_rule('/search/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Search.as_view('search'))
 
 	# Search api for specific commune or polling station observations.
-	app.add_url_rule('/api/observations/<string:commune>/<string:polling_station_name>', view_func=ObservationsApi.as_view('obsapi'))
+	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_name>/<string:polling_station_name>', view_func=Observation.as_view('observations'))
 
 	# Show observations for specific commune, polling station name, or room number.
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>', view_func=Commune.as_view('commune'))

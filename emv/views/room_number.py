@@ -2,7 +2,6 @@ from flask import render_template, request, redirect, url_for
 from flask.views import View
 from urllib2 import Request, urlopen, URLError
 import json
-from bson import json_util
 from emv import utils
 
 class RoomNumber(View):
@@ -18,6 +17,7 @@ class RoomNumber(View):
 
 		# Open the JSON Document requested from the EMA
 		kvv_response = urlopen(url).read()
+
 		# Convert JSON into a Dictionary
 		kvv_json=json.loads(kvv_response)
 

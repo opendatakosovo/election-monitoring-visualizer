@@ -2,7 +2,6 @@ from flask import render_template, request, redirect, url_for
 from flask.views import View
 from urllib2 import Request, urlopen, URLError
 import json
-from bson import json_util
 import requests
 from flask import Blueprint
 from flask.ext.paginate import Pagination

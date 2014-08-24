@@ -2,7 +2,6 @@ from flask import render_template, request, redirect, url_for
 from flask.views import MethodView
 from urllib2 import Request, urlopen, URLError
 import json
-from bson import json_util
 from emv import utils
 
 class PollingStation(MethodView):

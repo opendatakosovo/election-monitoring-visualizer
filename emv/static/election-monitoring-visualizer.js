@@ -203,18 +203,18 @@ function initPollingStationDropdown(communeSlug){
 	});
 
 	// init data visualization with default data selected
-	var communeName = $('#commune_select').find(":selected").text();
-	var pollingStationName = $('#polling_station_select').find(":selected").text();
+	var communeSlug = $('#commune_select').find(":selected").val();
+	var pollingStationSlug = $('#polling_station_select').find(":selected").val();
 		
-	visualizeData(communeName, pollingStationName);
+	visualizeData(communeSlug, pollingStationSlug);
 }
 
 // Visualize all data that we want to visualize
-function visualizeData(communeName, pollingStationName){
+function visualizeData(communeSlug, pollingStationSlug){
 	
 	clearPreviouslyGeneratedDataVisualization();
 
-	var url = '/api/observations/' + communeName + '/' + pollingStationName
+	var url = '/observations' + window.location.pathname + "/" + communeSlug + '/' + pollingStationSlug
 
 	$.get(url, function(data) {
 

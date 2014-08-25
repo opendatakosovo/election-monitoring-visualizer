@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for
-from flask.views import View
+from flask.views import MethodView
 from urllib2 import Request, urlopen, URLError
 import json
 import requests
@@ -9,7 +9,8 @@ from emv import utils
 
 mod = Blueprint('searchResults', __name__)
 
-class Search(View):	
+class Search(MethodView):	
+
 	methods=['GET']
 
 	def dispatch_request(self):
@@ -23,11 +24,11 @@ class Search(View):
 			ps = request.args.get('pollingStation')
 			uvc = request.args.get('ultraVioletControl')
 			fs = request.args.get('fingerSprayed')
-
 			url_params = (api_url, cmn, ps, uvc, fs)
 
+			print api_url
 			url = '%s/search/2013/local-elections/first-round/?commune=%s&pollingStation=%s&ultraVioletControl=%s&fingerSprayed=%s' % url_params
-
+			print url
 
 			# Request the JSON Document from the URL Results
 			searchResults= requests.get(url).json()

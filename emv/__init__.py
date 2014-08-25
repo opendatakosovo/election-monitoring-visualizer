@@ -117,7 +117,7 @@ def register_url_rules(app):
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Index.as_view('index_election_round'))
 
 	# Search for specific commune or polling station observations.
-	app.add_url_rule('/search/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Search.as_view('search'))
+	app.add_url_rule('/2013/local-elections/first-round/search/', view_func=Search.as_view('search'))
 
 	# Search api for specific commune or polling station observations.
 	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_name>/<string:polling_station_name>', view_func=Observation.as_view('observations'))

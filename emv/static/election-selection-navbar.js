@@ -48,6 +48,7 @@ $(document).ready(function() {
 				$('.polling-station-selection-container').css('display', 'block');
 
 				// Enable search.
+				$('#search-button').css('display','block').removeClass('disabled');
 			}	
 		}
 	}

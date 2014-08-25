@@ -38,7 +38,7 @@ function visualizeData(communeSlug, pollingStationSlug){
 function drawSectionHeader(index, roomNumber){
 	var sectionDivId = 'section-' + index;
 	var sectionHeaderDivId = 'header-' + index;
-	$("#dataVisualizationContainer #section-" + index).append("<div id='" + sectionDivId + "' style='display:inline;'><h3 id='" + sectionHeaderDivId + "'>Room " + roomNumber + ":</h3></div>");
+	$("#dataVisualizationContainer #section-" + index).append("<hr><div id='" + sectionDivId + "' style='display:inline;'><h3 id='" + sectionHeaderDivId + "'>Room " + roomNumber + ":</h3></div>");
 
 }
 
@@ -135,7 +135,7 @@ function drawIrregularitiesTable(index, irregularities){
 		['Attempted to vote more than once.',  translateIrregularity(irregularities.attemptToVoteMoreThanOnce)]
     ]);
 
-	renderListOfObservedYesNoIssues(data, containerDivId, listId, 'Observed Irregularities:');
+	renderListOfObservedYesNoIssues(data, containerDivId, listId, 'Irregularities:');
 
 }
 
@@ -196,13 +196,13 @@ function drawMissingMaterialTable(index, missingMaterial){
     data.addColumn('string', 'MissingMaterial');
     data.addColumn('boolean', 'Occured');
     data.addRows([
-		['Ballot Box.', ballotBox ],
-		['Voters Book.',  votersBook],
+		['Ballot box.', ballotBox ],
+		['Voters book.',  votersBook],
 		['Spray.', spray],
-		['Voters List.', votersList],
-		['Envelopes for Condition Voters.', envelopsForConditionVoters],
-		['UV Lamp.', uvLamp],
-		['Voting Cabin.', votingCabin],
+		['Voters list.', votersList],
+		['Envelopes for condition voters.', envelopsForConditionVoters],
+		['UV lamp.', uvLamp],
+		['Voting cabin.', votingCabin],
 		['Stamp.', stamp],
 		['Ballots.', ballots]
 		

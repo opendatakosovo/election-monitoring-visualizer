@@ -276,10 +276,10 @@ $(document).ready(function(){
 		// When new polling station is selected, open new window that presents data.
 		$('#polling_station_select').change(function(){
 
-			var communeName = $('#commune_select').find(":selected").text();
-			var pollingStationName = $('#polling_station_select').find(":selected").text();
+			var communeSlug = $('#commune_select').find(":selected").val();
+			var pollingStationSlug = $('#polling_station_select').find(":selected").val();
 		
-			visualizeData(communeName, pollingStationName);
+			visualizeData(communeSlug, pollingStationSlug);
 		});
 	}else{
 		//TODO: Hide dropdowns

@@ -54,10 +54,10 @@ function drawHowManyVotedByBarChart(index,voters){
 
 	var data = google.visualization.arrayToDataTable([
 		['Hour', 'Value',{ role: "style" }],
-		['10:00', votersByTen,"silver" ],
+		['10:00', votersByTen,"pink" ],
 		['13:00', votersByOne,"#b87333"],
 		['16:00', votersByFour,"gold"],
-		['19:00', votersBySeven,"color: #e5e4e2"]
+		['19:00', votersBySeven,"color: green"]
 	]);
 	var view = new google.visualization.DataView(data);
       view.setColumns([0, 1,

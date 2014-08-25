@@ -13,19 +13,19 @@ class PollingStation(MethodView):
 		kdi_api_url = utils.get_api_url(observer)
 		
 		#URL to request from KDI API for KVV MEMBERS GENDER DISTRIBUTION
-		url = '%s/kvv-members-gender-distribution/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune, polling_station_name)
+		kvv_genders_request_url = '%s/kvv-members-gender-distribution/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune, polling_station_name)
 
 		# Open the JSON Document requested from the EMA
-		kvv_response = urlopen(url).read()
+		kvv_response = urlopen(kvv_genders_request_url).read()
 
 		# Convert JSON into a Dictionary
-		kvv_json=json.loads(kvv_response)
+		kvv_json = json.loads(kvv_response)
 
-		#URL to request from KDI API for VOTES COUNT BY HOUR
-		url1 = '%s/votes-count/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune, polling_station_name)
+		# URL to request from KDI API for VOTES COUNT BY HOUR
+		votes_by_hour_request_url = '%s/votes-count/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune, polling_station_name)
 
 		# Open the JSON Document requested from the EMA
-		votes_by_hour_response = urlopen(url1).read()
+		votes_by_hour_response = urlopen(votes_by_hour_request_url).read()
  
 		# Convert JSON into a Dictionary
 		votes_by_hour_json=json.loads(votes_by_hour_response)

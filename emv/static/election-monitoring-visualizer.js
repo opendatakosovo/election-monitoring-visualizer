@@ -39,7 +39,17 @@ function visualizeSummaryData(voters, kvvMembers){
 	clearPreviouslyGeneratedDataVisualization();
 	var index = 0; // only one section when rendaring summary visualization.
 
-	$("#dataVisualizationContainer").append('<div id="section-' + index + '"></div>');
+	var title = "";
+	/*
+	if(window.location.pathname.split('/').length == 6){
+		title = "Observation summary for Decan.";
+
+	}else if(window.location.pathname.split('/').length == 7){
+		title = "Observation Summary for ";
+	}*/
+
+
+	$("#dataVisualizationContainer").append('<div id="section-' + index + '"><h3><em>' + title + '</em></h3></div>');
 	
 	drawHowManyVotedByBarChart(index, voters);
 

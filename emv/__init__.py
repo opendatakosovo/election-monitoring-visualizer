@@ -107,22 +107,34 @@ def register_url_rules(app):
 		Use pluggable class-based views: http://flask.pocoo.org/docs/views/
 	:param app: The Flask application instance.
 	''' 
-	# Index page form.
+	
+	''' 
+		Template Loading URLs.
+	'''
+	# Show Index page.
 	app.add_url_rule('/', view_func=Index.as_view('index'))
 
-	# Election selection for observation: observing organization, year, election type and election round.
+	# Show index page until all required URL directories are given to fetch observations.
 	app.add_url_rule('/<string:observer>', view_func=Index.as_view('index_observer'))
 	app.add_url_rule('/<string:observer>/<int:year>', view_func=Index.as_view('index_year'))
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>', view_func=Index.as_view('index_election_type'))
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Index.as_view('index_election_round'))
 
 	# Search for specific commune or polling station observations.
+	# FIXME: put search directory at begining. Add organization directory.
 	app.add_url_rule('/2013/local-elections/first-round/search/', view_func=Search.as_view('search'))
 
-	# Search api for specific commune or polling station observations.
-	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_name>/<string:polling_station_name>', view_func=Observation.as_view('observations'))
-
-	# Show observations for specific commune, polling station name, or room number.
+	# Show observations for specified commune.
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>', view_func=Commune.as_view('commune'))
+
+	# Show observations for specified commune and polling station name.
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>/<string:polling_station_name>', view_func=PollingStation.as_view('polling_station'))
+
+	# Show observations for specified commune, polling station name, and room number.
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune>/<string:polling_station_name>/<string:room_number>/', view_func=RoomNumber.as_view('room_number'))
+
+	''' 
+		JSON request URLs.
+	'''
+	# Get observations JSON for specified commune or polling station.
+	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_name>/<string:polling_station_name>', view_func=Observation.as_view('observations'))

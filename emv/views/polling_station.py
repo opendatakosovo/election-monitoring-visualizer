@@ -7,27 +7,43 @@ from emv import utils
 class PollingStation(MethodView):
 	methods = ['GET']
 
-	def dispatch_request(self, observer, year, election_type, election_round, commune, polling_station_name):
+	def dispatch_request(self, observer, year, election_type, election_round, commune_slug, polling_station_slug):
 
-		# get KDI api url
+		# get KDI api url.
 		kdi_api_url = utils.get_api_url(observer)
-		
-		#URL to request from KDI API for KVV MEMBERS GENDER DISTRIBUTION
-		kvv_genders_request_url = '%s/kvv-members-gender-distribution/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune, polling_station_name)
 
-		# Open the JSON Document requested from the EMA
+		# We need the commune name (we only have the slug).
+		# A bit hardore but plet's get it by making a GET request to polling stations JSON data.
+		commune_polling_stations_request_url = '%s/polling-stations/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug)
+
+		# Open the JSON Document.
+		polling_stations_response = urlopen(commune_polling_stations_request_url).read()
+
+		# Get the commune and polling station name.
+		polling_stations_dict = json.loads(polling_stations_response)
+		commune_name = polling_stations_dict[commune_slug]['name']
+		polling_station_name = polling_stations_dict[commune_slug]['pollingStations'][0]['name']
+		
+		# URL to request the KVV members gender distribution from KDI API.
+		kvv_genders_request_url = '%s/kvv-members-gender-distribution/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_name)
+
+		# Fetch response
 		kvv_response = urlopen(kvv_genders_request_url).read()
 
-		# Convert JSON into a Dictionary
-		kvv_json = json.loads(kvv_response)
+		# Convert JSON into a Dictionary.
+		kvv_dict = json.loads(kvv_response)
 
-		# URL to request from KDI API for VOTES COUNT BY HOUR
-		votes_by_hour_request_url = '%s/votes-count/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune, polling_station_name)
+		# FIXME: Sometimesthe result is empty. Why? e.g. /kdi/kvv-members-gender-distribution/2013/localelections/first-round/ferizaj/fetah-sylejmani
+		if len(kvv_dict['result']) == 0:
+			kvv_dict = None
 
-		# Open the JSON Document requested from the EMA
+		# URL to request from KDI API for hour vote counts.
+		votes_by_hour_request_url = '%s/votes-count/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
+
+		# Fetch response
 		votes_by_hour_response = urlopen(votes_by_hour_request_url).read()
  
 		# Convert JSON into a Dictionary
-		votes_by_hour_json=json.loads(votes_by_hour_response)
+		votes_by_hour_dict = json.loads(votes_by_hour_response)
 
-		return render_template('observation.html', kvvMGD = kvv_json,votesByHour = votes_by_hour_json)
+		return render_template('observation.html', kvv=kvv_dict, votes_by_hour=votes_by_hour_dict, commune_name=commune_name, polling_station_name=polling_station_name, room_number=None)

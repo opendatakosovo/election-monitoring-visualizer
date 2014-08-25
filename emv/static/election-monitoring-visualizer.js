@@ -35,25 +35,16 @@ function visualizeData(communeSlug, pollingStationSlug){
 	});
 }
 
-function visualizeSummaryData(voters, kvvMembers){
+function visualizeSummaryData(title, voters, kvvMembers){
 	clearPreviouslyGeneratedDataVisualization();
-	var index = 0; // only one section when rendaring summary visualization.
-
-	var title = "";
-	/*
-	if(window.location.pathname.split('/').length == 6){
-		title = "Observation summary for Decan.";
-
-	}else if(window.location.pathname.split('/').length == 7){
-		title = "Observation Summary for ";
-	}*/
-
+	var index = 0; // only one section when rendering summary visualization.
 
 	$("#dataVisualizationContainer").append('<div id="section-' + index + '"><h3><em>' + title + '</em></h3></div>');
 	
 	drawHowManyVotedByBarChart(index, voters);
-
-	drawKvvMembersPieChart(index, kvvMembers);
+	if(kvvMembers != undefined){
+		drawKvvMembersPieChart(index, kvvMembers);
+	}
 }
 
 function drawSectionHeader(index, roomNumber){
@@ -92,7 +83,6 @@ function drawHowManyVotedByBarChart(index, voters){
 
 	var options = {
 	  	'title': 'Ballots Casted For Given Hours',
-		'is3D': true,
 		'bar': {groupWidth: "95%"},
         'legend': { position: "none" },
   		'height':700,

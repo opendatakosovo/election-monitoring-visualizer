@@ -7,13 +7,13 @@ class Observation(View):
 
 	methods=['GET']
 
-	def dispatch_request(self, observer, year, election_type, election_round, commune_name, polling_station_name):
+	def dispatch_request(self, observer, year, election_type, election_round, commune_slug, polling_station_slug):
 		
 		# Get KDI API URL.
 		kdi_api_url = utils.get_api_url(observer)
 
 		# Build GET Request URL.
-		url ='%s/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_name, polling_station_name)
+		url ='%s/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
 
 		# Get and return JSON response.
 		observations = urlopen(url).read()

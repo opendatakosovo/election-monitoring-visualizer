@@ -3,17 +3,35 @@
 	<script>
 		//FIXME: This should be done server side.
 		var voters = Object();
-		voters.tenAM = {{ votesByHour['result'][0]['tenAM'] }};
-		voters.onePM = {{ votesByHour['result'][0]['onePM'] }};
-		voters.fourPM = {{ votesByHour['result'][0]['fourPM'] }};
-		voters.sevenPM = {{ votesByHour['result'][0]['sevenPM'] }};
+		voters.tenAM = {{ votes_by_hour['result'][0]['tenAM'] }};
+		voters.onePM = {{ votes_by_hour['result'][0]['onePM'] }};
+		voters.fourPM = {{ votes_by_hour['result'][0]['fourPM'] }};
+		voters.sevenPM = {{ votes_by_hour['result'][0]['sevenPM'] }};
 
-		var kvvMembers = Object();
-		kvvMembers.total = {{ kvvMGD['result'][0]['total'] }};
- 		kvvMembers.female = {{ kvvMGD['result'][0]['totalFemale'] }};
+		var kvvMembers = undefined;
+		
+		{% if kvv != None %}
+			kvvMembers = Object();
+			kvvMembers.total = {{ kvv['result'][0]['total'] }};
+	 		kvvMembers.female = {{ kvv['result'][0]['totalFemale'] }};
+    	{% endif %}
 
+		var commune_name = "{{ commune_name }}";
+		var polling_station_name = "{{ polling_station_name }}";
+		var room_number = "{{ room_number }}";
+
+		var title = "";
+
+		if(polling_station_name != "None" && room_number != 'None'){
+			title = 'Observation summary for room ' + room_number + ' of polling station "' + polling_station_name + '" in ' + commune_name;
+		}else if(polling_station_name != "None"){
+			title = 'Observation summary for polling station "' + polling_station_name + '" in ' + commune_name;
+		}else{
+			title = 'Observation summary for ' + commune_name;
+		}
+		
 		$(document).ready(function(){
-			visualizeSummaryData(voters, kvvMembers);
+			visualizeSummaryData(title, voters, kvvMembers);
 		});
 	</script>
 
@@ -21,6 +39,6 @@
 
 	<div id="dataVisualizationContainer">
 		<div id="section-0">
-		</div>	
+		</div>
 	</div>
 {% endblock %}

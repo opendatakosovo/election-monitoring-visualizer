@@ -35,14 +35,27 @@ function visualizeData(communeSlug, pollingStationSlug){
 	});
 }
 
+function visualizeSummaryData(voters, kvvMembers){
+	clearPreviouslyGeneratedDataVisualization();
+	var index = 0; // only one section when rendaring summary visualization.
+
+	$("#dataVisualizationContainer").append('<div id="section-' + index + '"></div>');
+	
+	drawHowManyVotedByBarChart(index, voters);
+
+	drawKvvMembersPieChart(index, kvvMembers);
+}
+
 function drawSectionHeader(index, roomNumber){
 	var sectionDivId = 'section-' + index;
 	var sectionHeaderDivId = 'header-' + index;
-	$("#dataVisualizationContainer #section-" + index).append("<hr><div id='" + sectionDivId + "' style='display:inline;'><h3 id='" + sectionHeaderDivId + "'>Room " + roomNumber + ":</h3></div>");
+	var roomNumber = roomNumber.toUpperCase();
+
+	$("#dataVisualizationContainer #section-" + index).append("<hr><div id='" + sectionDivId + "'><h3 id='" + sectionHeaderDivId + "'>Room " + roomNumber + "</h3></div>");
 
 }
 
-function drawHowManyVotedByBarChart(index,voters){
+function drawHowManyVotedByBarChart(index, voters){
 	var votersByTen = voters.tenAM;
 	var votersByOne = voters.onePM;
 	var votersByFour = voters.fourPM;
@@ -54,10 +67,10 @@ function drawHowManyVotedByBarChart(index,voters){
 
 	var data = google.visualization.arrayToDataTable([
 		['Hour', 'Value',{ role: "style" }],
-		['10:00', votersByTen,"pink" ],
-		['13:00', votersByOne,"#b87333"],
-		['16:00', votersByFour,"gold"],
-		['19:00', votersBySeven,"color: green"]
+		['10:00', votersByTen, "pink" ],
+		['13:00', votersByOne, "#b87333"],
+		['16:00', votersByFour, "gold"],
+		['19:00', votersBySeven, "green"]
 	]);
 	var view = new google.visualization.DataView(data);
       view.setColumns([0, 1,
@@ -278,11 +291,26 @@ function initPollingStationDropdown(communeSlug){
 			.text(obj.name)); 
 	});
 
-	// init data visualization with default data selected
+	// Get commune and polling station slugs
 	var communeSlug = $('#commune_select').find(":selected").val();
 	var pollingStationSlug = $('#polling_station_select').find(":selected").val();
+
+	// Set the href for the commune and polling station summary pages.
+	setCommuneSummaryPageUrl(communeSlug);
+	setPollingStationSummaryPageUrl(communeSlug, pollingStationSlug)
 		
+	// init data visualization with default data selected
 	visualizeData(communeSlug, pollingStationSlug);
+}
+
+function setCommuneSummaryPageUrl(communeSlug){
+	var communeUrl = window.location.pathname + "/" + communeSlug
+	$('#commune-summary-link').attr('href', communeUrl);
+}
+
+function setPollingStationSummaryPageUrl(communeSlug, pollingStationSlug){
+	var pollingStationUrl = window.location.pathname + "/" + communeSlug + '/' + pollingStationSlug
+	$('#polling-station-summary-link').attr('href', pollingStationUrl);
 }
 
 
@@ -290,41 +318,3 @@ function clearPreviouslyGeneratedDataVisualization(){
 	$("#appInfoContainer").html('');
 	$("#dataVisualizationContainer").empty();
 }
-
-$(document).ready(function(){
-
-	pollingStationDataRetrieved = false;
-
-	// Initialize commune name dropdown list.
-	// index is the name of the commune.
-	// value is the name of the polling stations.
-	$.each(pollingStationGroupedByCommuneJson, function(idx, value) {
-		$('#commune_select')
-			.append($("<option></option>")
-			.attr("value", idx)
-			.text(value.name)); 
-
-		pollingStationDataRetrieved = true;
-	});
-
-	if(pollingStationDataRetrieved){
-		// Initialize polling station name dropdown listin relation to default commune name.
-		initPollingStationDropdown($('#commune_select').find(":selected").val());
-
-		// When new communue is selected, re-initialize the polling station name dropdown list.
-		$('#commune_select').change(function(){
-			initPollingStationDropdown($(this).val())
-		});
-
-		// When new polling station is selected, open new window that presents data.
-		$('#polling_station_select').change(function(){
-
-			var communeSlug = $('#commune_select').find(":selected").val();
-			var pollingStationSlug = $('#polling_station_select').find(":selected").val();
-		
-			visualizeData(communeSlug, pollingStationSlug);
-		});
-	}else{
-		//TODO: Hide dropdowns
-	}
-});

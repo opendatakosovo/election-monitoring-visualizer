@@ -2,6 +2,54 @@
 {% block body %}
 	<script>
 		var pollingStationGroupedByCommuneJson = {{ polling_station_grouped_by_commune_dict|tojson}};
+
+		$(document).ready(function(){
+
+			pollingStationDataRetrieved = false;
+
+			// Initialize commune name dropdown list.
+			// index is the name of the commune.
+			// value is the name of the polling stations.
+			$.each(pollingStationGroupedByCommuneJson, function(idx, value) {
+				$('#commune_select')
+					.append($("<option></option>")
+					.attr("value", idx)
+					.text(value.name)); 
+
+				// Set the href for the commune summary pages.
+				var communeSlug = $('#commune_select').find(":selected").val();
+				setCommuneSummaryPageUrl(communeSlug);
+
+				pollingStationDataRetrieved = true;
+			});
+
+			if(pollingStationDataRetrieved){
+				// Initialize polling station name dropdown listin relation to default commune name.
+				initPollingStationDropdown($('#commune_select').find(":selected").val());
+
+				// When new communue is selected, re-initialize the polling station name dropdown list.
+				$('#commune_select').change(function(){
+					initPollingStationDropdown($(this).val())
+				});
+
+				// When new polling station is selected, open new window that presents data.
+				$('#polling_station_select').change(function(){
+
+					var communeSlug = $('#commune_select').find(":selected").val();
+					var pollingStationSlug = $('#polling_station_select').find(":selected").val();
+
+					// Set the href for the polling station summary pages.
+					setPollingStationSummaryPageUrl(communeSlug, pollingStationSlug);
+	
+					visualizeData(communeSlug, pollingStationSlug);
+				});
+
+				
+
+				
+			}
+
+		});
 	</script>
 
 
@@ -60,6 +108,12 @@
 				</div>
 			</div>
 		</form>
+
+		<div align="right">
+			<div>
+				Access the summary page for this <a href="" target="_blank" id="commune-summary-link">commune</a> or <a href="" id="polling-station-summary-link" target="_blank">polling station</a>.
+			</div>
+		</div>
 	</div>
 
 	<div id="dataVisualizationContainer">

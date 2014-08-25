@@ -1,58 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
-   <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-	["Number of votes by hour", "Time" , { role: "style" } ],
-    ["10:00", {{votesByHour['result'][0]['tenAM']}}, "Green" ],
-	["13:00", {{votesByHour['result'][0]['onePM']}}, "Green" ],
-	["16:00", {{votesByHour['result'][0]['fourPM']}}, "Green" ],
-	["19:00", {{votesByHour['result'][0]['sevenPM']}}, "Green" ]
-      ]);
+	<script>
+		//FIXME: This should be done server side.
+		var voters = Object();
+		voters.tenAM = {{ votesByHour['result'][0]['tenAM'] }};
+		voters.onePM = {{ votesByHour['result'][0]['onePM'] }};
+		voters.fourPM = {{ votesByHour['result'][0]['fourPM'] }};
+		voters.sevenPM = {{ votesByHour['result'][0]['sevenPM'] }};
 
-         var view = new google.visualization.DataView(data);
-      view.setColumns([0, 1,
-                       { calc: "stringify",
-                         sourceColumn: 1,
-                         type: "string",
-                         role: "annotation" },
-                       2]);
+		var kvvMembers = Object();
+		kvvMembers.total = {{ kvvMGD['result'][0]['total'] }};
+ 		kvvMembers.female = {{ kvvMGD['result'][0]['totalFemale'] }};
 
-      var options = {
-	title: "Number of votes by hour",
-	width: 600,
-	height: 400,
-	is3D: true,
-	bar: {groupWidth: "95%"},
-        legend: { position: "none" },
-      };
-       var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_values'));
-        chart.draw(data, options);
-      }
-</script>
+		$(document).ready(function(){
+			visualizeSummaryData(voters, kvvMembers);
+		});
+	</script>
 
-<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
+	<div id="appInfoContainer"></div>
 
- <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ["Observators in PollingStation, distributed by gender", "Gender"],
-          ["Male",     {{ kvvMGD['result'][0]['total'] - kvvMGD['result'][0]['totalFemale'] }}],
-          ["Female",     {{ kvvMGD['result'][0]['totalFemale'] }}]
-        ]);
-
-        var options = {
-          title: 'My Daily Activities'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('chartByGender'));
-        chart.draw(data, options);
-      }
-    </script>
-
-<div id="chartByGender" style="width: 900px; height: 300px;"></div>
+	<div id="dataVisualizationContainer">
+		<div id="section-0">
+		</div>	
+	</div>
 {% endblock %}

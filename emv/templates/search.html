@@ -47,16 +47,16 @@
 		  <tr>
 				<td>{{ loop.index }}</td>
 		    	<td>
-					<a href="http://127.0.0.1:5000/observations/{{k['pollingStation']['commune']}}">{{k['pollingStation']['commune']}}</a>
+					<a href="http://127.0.0.1:5000/kdi/2013/local-elections/first-round/{{k['pollingStation']['communeSlug']}}">{{k['pollingStation']['commune']}}</a>
 				</td>
 				<td>
-					<a href="http://127.0.0.1:5000/observations/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}">{{k['pollingStation']['name']}}</a>
+					<a href="http://127.0.0.1:5000/kdi/2013/local-elections/first-round/{{k['pollingStation']['communeSlug']}}/{{k['pollingStation']['nameSlug']}}">{{k['pollingStation']['name']}}</a>
 				</td>
 				<td>
 					{{k['pollingStation']['number']}}
 				</td>
 				<td>
-					<a href="http://127.0.0.1:5000/observations/{{k['pollingStation']['commune']}}/{{k['pollingStation']['name']}}/{{k['pollingStation']['roomNumber']}}">{{k['pollingStation']['roomNumber']}}</a>
+					<a href="http://127.0.0.1:5000/kdi/2013/local-elections/first-round/{{k['pollingStation']['communeSlug']}}/{{k['pollingStation']['nameSlug']}}/{{k['pollingStation']['roomNumber']}}">{{k['pollingStation']['roomNumber']}}</a>
 				</td>
 		  </tr>
 		{% endfor %}

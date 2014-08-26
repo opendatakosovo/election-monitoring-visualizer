@@ -108,7 +108,13 @@ def register_url_rules(app):
 		Use pluggable class-based views: http://flask.pocoo.org/docs/views/
 	:param app: The Flask application instance.
 	''' 
-	
+
+	''' 
+		JSON request URLs.
+	'''
+	# Get observations JSON for specified commune or polling station.
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>/observations', view_func=Observation.as_view('observations'))
+
 	''' 
 		Template Loading URLs.
 	'''
@@ -133,8 +139,3 @@ def register_url_rules(app):
 	# Show observations for specified commune, polling station name, and room number.
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>/<string:room_number>/', view_func=RoomNumber.as_view('room_number'))
 
-	''' 
-		JSON request URLs.
-	'''
-	# Get observations JSON for specified commune or polling station.
-	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>/observations', view_func=Observation.as_view('observations'))

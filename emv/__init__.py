@@ -113,7 +113,7 @@ def register_url_rules(app):
 		JSON request URLs.
 	'''
 	# Get observations JSON for specified commune or polling station.
-	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>/observations', view_func=Observation.as_view('observations'))
+	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>', view_func=Observation.as_view('observations'))
 
 	''' 
 		Template Loading URLs.

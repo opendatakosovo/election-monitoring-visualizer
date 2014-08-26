@@ -5,7 +5,7 @@ function visualizeData(communeSlug, pollingStationSlug){
 	
 	clearPreviouslyGeneratedDataVisualization();
 
-	var url = basePath + window.location.pathname.replace(basePath, '') + "/" + communeSlug + '/' + pollingStationSlug + "/observations"
+	var url = basePath + "/observations" + window.location.pathname.replace(basePath, '') + "/" + communeSlug + '/' + pollingStationSlug
 
 	$.get(url, function(data) {
 

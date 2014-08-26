@@ -51,7 +51,7 @@ def load_config(app):
 	app.config['SERVER_PORT'] = config.get('Application', 'SERVER_PORT')
 	app.config['BASE_PATH'] = config.get('Application', 'BASE_PATH')
 
-	app.config['API_KDI'] = config.get('Api', 'KDI')
+	app.config['API_ELECTION_MONITORING'] = config.get('Api', 'ELECTION_MONITORING')
 
 	# Logging path might be relative or starts from the root.
 	# If it's relative then be sure to prepend the path with the application's root directory path.

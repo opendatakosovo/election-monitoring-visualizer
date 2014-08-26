@@ -9,7 +9,7 @@ class Utils(object):
 		''' Generate API URL for given observer.
 		:param observer: a string identifying the election monitoring organization.
 		'''
-		api_domain = current_app.config['API_KDI']
+		api_domain = current_app.config['API_ELECTION_MONITORING']
 		api_url = '%s/%s' % (api_domain, observer)
 
 		return api_url

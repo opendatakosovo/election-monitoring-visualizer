@@ -151,37 +151,39 @@
     </div>
 </form>
 
-<br><br>
-<table class="table" style="width:800px">
-	  <tbody>
-			<tr>
-				<th></th>
-		 		<th>Commune</th>
-				<th>Polling Station Name</th> 
-				<th>Polling Station Number</th>
-				<th>Room</th>
-			</tr>
-	  
-	  
-		{% for observation in search_result %}
-		  <tr>
-				<td>
-					{{ loop.index }}
-				</td>
-		    	<td>
-					<a href="{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}">{{ observation['pollingStation']['commune'] }}</a>
-				</td>
-				<td>
-					<a href="{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}/{{ observation['pollingStation']['nameSlug'] }}">{{ observation['pollingStation']['name'] }}</a>
-				</td>
-				<td>
-					{{ observation['pollingStation']['number'] }}
-				</td>
-				<td>
-					<a href="{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}/{{ observation['pollingStation']['nameSlug'] }}/{{ observation['pollingStation']['roomNumber'] }}">{{ observation['pollingStation']['roomNumber'] }}</a>
-				</td>
-		  </tr>
-		{% endfor %}
-	  </tbody>
+<hr>
+<table class="table" style="width:800px">  
+{% for observation in search_result %}
+	{% if loop.index == 1 %}
+		<thead>
+		<tr>
+			<th></th>
+			<th>Commune</th>
+			<th>Polling Station Name</th> 
+			<th>Polling Station Number</th>
+			<th>Room</th>
+		</tr>
+		</thead>
+		<tbody>
+	{% endif %}
+		<tr>
+			<td>
+				{{ loop.index }}
+			</td>
+			<td>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}" target="_blank">{{ observation['pollingStation']['commune'] }}</a>
+			</td>
+			<td>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}/{{ observation['pollingStation']['nameSlug'] }}" target="_blank">{{ observation['pollingStation']['name'] }}</a>
+			</td>
+			<td>
+				{{ observation['pollingStation']['number'] }}
+			</td>
+			<td>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}/{{ observation['pollingStation']['nameSlug'] }}/{{ observation['pollingStation']['roomNumber'] }}" target="_blank">{{ observation['pollingStation']['roomNumber'] }}</a>
+			</td>
+		</tr>
+{% endfor %}
+  		</tbody>
 </table>
 {% endblock %}

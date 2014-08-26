@@ -122,8 +122,7 @@ def register_url_rules(app):
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Index.as_view('index_election_round'))
 
 	# Search for specific commune or polling station observations.
-	# FIXME: put search directory at begining. Add organization directory.
-	app.add_url_rule('/search/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Search.as_view('search'))
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/search', view_func=Search.as_view('search'))
 
 	# Show observations for specified commune.
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>', view_func=Commune.as_view('commune'))
@@ -138,4 +137,4 @@ def register_url_rules(app):
 		JSON request URLs.
 	'''
 	# Get observations JSON for specified commune or polling station.
-	app.add_url_rule('/observations/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>', view_func=Observation.as_view('observations'))
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>/observations', view_func=Observation.as_view('observations'))

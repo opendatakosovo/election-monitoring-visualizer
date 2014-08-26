@@ -45,7 +45,7 @@ class Search(MethodView):
 		# Request the JSON Document from the URL Results
 		search_result = requests.get(search_url).json()
 
-		directory_path = '/%s/%d/%s/%s' % (observer, year, election_type, election_round)
+		directory_path = '%s/%d/%s/%s' % (observer, year, election_type, election_round)
 
 		return render_template('search.html', directory_path=directory_path, polling_station_grouped_by_commune_dict=polling_station_grouped_by_commune_dict, search_result=search_result)
 

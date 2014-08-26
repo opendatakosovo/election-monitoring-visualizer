@@ -48,6 +48,7 @@ $(document).ready(function() {
 				$('.polling-station-selection-container').css('display', 'block');
 
 				// Enable search.
+
 				initSearchPageLink();
 			}	
 		}
@@ -55,8 +56,13 @@ $(document).ready(function() {
 });
 
 function initSearchPageLink(){
-	// Build the search page url. #PieceOfCake
-	search_page_url = basePath + "/search" + window.location.pathname.replace(basePath, '');
+	// Build the search page url.
+	search_page_url = basePath + window.location.pathname.replace(basePath, '');
+
+	// If doesn't end with '/search' already (like in the search page).
+	if(search_page_url.indexOf("/search", search_page_url.length - "/search".length) == -1){
+		search_page_url = search_page_url + "/search";
+	}
 
 	// Add url to the link anchor tag.
 	$("#search-href").attr("href", search_page_url);

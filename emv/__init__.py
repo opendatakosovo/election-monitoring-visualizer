@@ -137,5 +137,5 @@ def register_url_rules(app):
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>', view_func=PollingStation.as_view('polling_station'))
 
 	# Show observations for specified commune, polling station name, and room number.
-	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>/<string:room_number>/', view_func=RoomNumber.as_view('room_number'))
+	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>/<string:polling_station_slug>/<string:room_number>', view_func=RoomNumber.as_view('room_number'))
 

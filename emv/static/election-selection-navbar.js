@@ -1,17 +1,18 @@
+// The base directory the application will be hosted in when deployed.
+var baseDirectory = '/app/election-monitoring-visualizer'
+
 
 $(document).ready(function() {
 	//TODO: When we cover observation data from different organization, we will
-	//have to dynamically register events instead of hardcoding like this.
-	
+	//have to dynamically register nav bar menu item events instead of hardcoding like this.
 	
 	// First disable year, election type, and election round drop downs
 	initDropdowns();
-
 	
 	// Build array of election selection parameters.
 	// e.g. of resulting array: ["kdi", "2013", "local-elections", "first-round"]
 	// Remove first '/', this is why we use substring.
-	var pathname = window.location.pathname.substring(1);
+	var pathname = window.location.pathname.replace(baseDirectory, '').substring(1);
 
 	if(pathname.length > 0){
 		var electionSelectionParams = pathname.split('/');

@@ -74,6 +74,7 @@
 </script>
 
 <form class="form-horizontal">
+
 	<div class="form-group">
 		<label for="commune_select" class="control-label col-xs-2">Commune</label>
 		<div class="col-xs-3">
@@ -116,6 +117,30 @@
 				<option value="rarely">Rarely</option>
   				<option value="never">Never</option>
 			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="control-label col-xs-2">
+			Missing Materials
+		</label>
+
+		<div class="btn-group-vertical col-xs-3" data-toggle="buttons">
+			<label class="btn btn-default">
+				<input type="checkbox" class="btn btn-default" name="missing_voting_cabin" id="missing_voting_cabin" value="true">Voting Cabin
+			</label>
+			<label class="btn btn-default">
+				<input type="checkbox" class="btn btn-default" name="missing_ballot_box" id="missing_ballot_box" value="true">Ballot Box
+			</label>
+			<label class="btn btn-default">
+				<input type="checkbox" class="btn btn-default" name="missing_ballots" id="missing_ballots" value="true">Ballots
+			</label>
+			<label class="btn btn-default">
+				<input type="checkbox" class="btn btn-default" name="missing_voters_book" id="missing_voters_book" value="true">Voters Book
+			</label>
+			<label class="btn btn-default">
+				<input type="checkbox" class="btn btn-default" name="missing_uv_lamp" id="missing_uv_lamp" value="true">UV Lamp
+			</label>
 		</div>
 	</div>
 

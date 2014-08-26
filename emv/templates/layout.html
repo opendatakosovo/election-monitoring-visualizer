@@ -6,6 +6,12 @@
 		<script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='election-monitoring-visualizer.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='election-selection-navbar.js') }}"></script>
+
+		<script>
+			// This global variable is defined in election-selection-navbar.js.
+			// But we can only set it here because it is assigned a template value.
+			basePath = '{{ config.BASE_PATH }}';
+		</script>
 		
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">

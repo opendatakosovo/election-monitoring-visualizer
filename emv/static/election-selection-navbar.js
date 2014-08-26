@@ -1,3 +1,5 @@
+var basePath = '';
+
 $(document).ready(function() {
 	//TODO: When we cover observation data from different organization, we will
 	//have to dynamically register nav bar menu item events instead of hardcoding like this.
@@ -8,7 +10,7 @@ $(document).ready(function() {
 	// Build array of election selection parameters.
 	// e.g. of resulting array: ["kdi", "2013", "local-elections", "first-round"]
 	// Remove first '/', this is why we use substring.
-	var pathname = window.location.pathname.replace('{{ config.BASE_PATH }}', '').substring(1);
+	var pathname = window.location.pathname.replace(basePath, '').substring(1);
 
 	if(pathname.length > 0){
 		var electionSelectionParams = pathname.split('/');

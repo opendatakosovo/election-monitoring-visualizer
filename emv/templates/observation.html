@@ -16,19 +16,15 @@
 	 		kvvMembers.female = {{ kvv['result'][0]['totalFemale'] }};
     	{% endif %}
 
-		var commune_name = "{{ commune_name }}";
-		var polling_station_name = "{{ polling_station_name }}";
-		var room_number = "{{ room_number }}";
-
 		var title = "";
 
-		if(polling_station_name != "None" && room_number != 'None'){
-			title = 'Observation summary for room ' + room_number + ' of polling station "' + polling_station_name + '" in ' + commune_name;
-		}else if(polling_station_name != "None"){
-			title = 'Observation summary for polling station "' + polling_station_name + '" in ' + commune_name;
-		}else{
-			title = 'Observation summary for ' + commune_name;
-		}
+		{% if polling_station_name != None and room_number != None %}
+			title = 'Observation aggregate for room {{ room_number }} of polling station "{{ polling_station_name }}" in {{ commune_name }}';
+		{% elif polling_station_name != None %}
+			title = 'Observation aggregate for polling station "{{ polling_station_name }}" in {{ commune_name }}';
+		{% else %}
+			title = 'Observation aggregate for {{ commune_name }}';
+		{% endif %}
 		
 		$(document).ready(function(){
 			visualizeSummaryData(title, voters, kvvMembers);

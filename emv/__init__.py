@@ -122,7 +122,7 @@ def register_url_rules(app):
 
 	# Search for specific commune or polling station observations.
 	# FIXME: put search directory at begining. Add organization directory.
-	app.add_url_rule('/2013/local-elections/first-round/search/', view_func=Search.as_view('search'))
+	app.add_url_rule('/search/<string:observer>/<int:year>/<string:election_type>/<string:election_round>', view_func=Search.as_view('search'))
 
 	# Show observations for specified commune.
 	app.add_url_rule('/<string:observer>/<int:year>/<string:election_type>/<string:election_round>/<string:commune_slug>', view_func=Commune.as_view('commune'))

@@ -8,7 +8,6 @@ class Index(View):
 	methods=['GET']
 
 	def dispatch_request(self, observer=None, year=None, election_type=None, election_round=None):
-		
 		''' Get polling stations grouped by commune.
 		:param observer: The election monitoring organization
 		:param year: The election year.

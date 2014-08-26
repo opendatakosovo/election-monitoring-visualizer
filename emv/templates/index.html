@@ -26,10 +26,12 @@
 			if(pollingStationDataRetrieved){
 				// Initialize polling station name dropdown listin relation to default commune name.
 				initPollingStationDropdown($('#commune_select').find(":selected").val());
+				initVisualizeData();
 
 				// When new communue is selected, re-initialize the polling station name dropdown list.
 				$('#commune_select').change(function(){
-					initPollingStationDropdown($(this).val())
+					initPollingStationDropdown($(this).val());
+					initVisualizeData();
 				});
 
 				// When new polling station is selected, open new window that presents data.
@@ -40,18 +42,12 @@
 
 					// Set the href for the polling station summary pages.
 					setPollingStationSummaryPageUrl(communeSlug, pollingStationSlug);
-	
+
 					visualizeData(communeSlug, pollingStationSlug);
-				});
-
-				
-
-				
+				});		
 			}
-
 		});
 	</script>
-
 
 	<div id="appInfoContainer">
 		<h1>Let's get started</h1><hr/>

@@ -291,6 +291,9 @@ function initPollingStationDropdown(communeSlug){
 			.text(obj.name)); 
 	});
 
+}
+
+function initVisualizeData(){
 	// Get commune and polling station slugs
 	var communeSlug = $('#commune_select').find(":selected").val();
 	var pollingStationSlug = $('#polling_station_select').find(":selected").val();

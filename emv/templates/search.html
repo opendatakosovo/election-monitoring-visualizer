@@ -1,90 +1,161 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<form name = "form">
-     
-    <div>Search the KDI MongoDB Database with different parameters</div>
-     
-    <!-- where our search value will be entered -->
-	Commune Name: <input type="text" name="commune"/> 
+<script>
+	var pollingStationGroupedByCommuneJson = {{ polling_station_grouped_by_commune_dict|tojson}};
 
-	PollingStation Name: <input type="text" name="pollingStation"/> <br>
+	function initPollingStationDropdown(communeSlug){
 
-	Ultra Violet Control:<select name="ultraVioletControl">
-  					 	 		<option value="always">Always</option>
-  								<option value="never">Never</option>
-     					 </select>
+		// First clear the polling station drowpown list
+		$('#polling_station_select option').remove();
 
-	Finger Sprayed:<select name="fingerSprayed">
+		$('#polling_station_select')
+				.append($("<option></option>")
+				.attr("value", "")
+				.text("")); 
 
-  						<option value="always">Always</option>
-  						<option value="never">Never</option>
+		var pollingStations = pollingStationGroupedByCommuneJson[communeSlug].pollingStations;
 
-    				 </select>
-	
-	
-    <!-- This button will call our JavaScript Search functions -->
-    <input type="submit" value="Search" id="search-btn" />
+		$.each(pollingStations, function(index, obj) {
+			$('#polling_station_select')
+				.append($("<option></option>")
+				.attr("value", obj.slug)
+				.text(obj.name)); 
+		});
+
+	}
+
+	$(document).ready(function(){
+
+		// Option to search in all communes
+		$('#commune_select')
+			.append($("<option></option>")
+			.attr("value", "")
+			.text("")); 
+
+		// Initialize commune name dropdown list.
+		// index is the name of the commune.
+		// value is the name of the polling stations.
+		$.each(pollingStationGroupedByCommuneJson, function(idx, value) {
+			$('#commune_select')
+				.append($("<option></option>")
+				.attr("value", idx)
+				.text(value.name)); 
+
+			pollingStationDataRetrieved = true;
+		});
+
+		// Initialize polling station name dropdown listin relation to default commune name.
+		//initPollingStationDropdown($('#commune_select').find(":selected").val());
+
+		// When new communue is selected, re-initialize the polling station name dropdown list.
+		$('#commune_select').change(function(){
+			if($('#commune_select').find(":selected").val() == ""){
+
+				$('#polling_station_select option').remove();
+
+				// Option to search in all polling stations.
+				$('#polling_station_select')
+						.append($("<option></option>")
+						.attr("value", "")
+						.text("")); 
+
+				$('#polling_station_select').attr('disabled', 'disabled');
+			}else{
+				$('#polling_station_select').removeAttr('disabled');
+				initPollingStationDropdown($(this).val())
+			}
+
+			// Still want to submit even if disabled
+			$('#polling_station_hidden').val($('#polling_station_select').find(":selected").val())
+		});	
+	});
+</script>
+
+<form class="form-horizontal">
+	<div class="form-group">
+		<label for="commune_select" class="control-label col-xs-2">Commune</label>
+		<div class="col-xs-3">
+			<select class="form-control" id="commune_select" name="commune_select">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="polling_station_select" class="control-label col-xs-2">Polling Station</label>
+		<div class="col-xs-3">
+			<select class="form-control" id="polling_station_select" name="polling_station_select" disabled="disabled">
+				<option value=""></option>
+			</select>
+			<!-- Still want to submit even if disabled -->
+			<input type="hidden" id="polling_station_hidden" name="polling_station_select" value="" />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="ultra_violet_select" class="control-label col-xs-2">Ultra Violet</label>
+		<div class="col-xs-3">
+			<select class="form-control" id="ultra_violet_control_select" name="ultra_violet_control_select">
+				<option value=""></option>
+				<option value="always">Always</option>
+				<option value="sometimes">Sometimes</option>
+				<option value="rarely">Rarely</option>
+  				<option value="never">Never</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="finger_sprayed_select" class="control-label col-xs-2">Finger Sprayed</label>
+		<div class="col-xs-3">
+			<select class="form-control" id="finger_sprayed_select" name="finger_sprayed_select">
+				<option value=""></option>
+				<option value="always">Always</option>
+				<option value="sometimes">Sometimes</option>
+				<option value="rarely">Rarely</option>
+  				<option value="never">Never</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+        <div class="col-xs-offset-4 col-xs-3">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
 </form>
- 
-<div id = "s-results">
-    <!-- This is where our search results will be displayed -->
-</div>
 
-
-<table  class="table" style="width:900px">
+<br><br>
+<table class="table" style="width:800px">
 	  <tbody>
 			<tr>
-					  <th>Nr</th>
-		 			  <th>Commune</th>
-					  <th>Polling Station Name</th> 
-					  <th>Polling Station Number</th>
-					  <th>Polling Station Room Number</th>
+				<th></th>
+		 		<th>Commune</th>
+				<th>Polling Station Name</th> 
+				<th>Polling Station Number</th>
+				<th>Room</th>
 			</tr>
 	  
 	  
-		{% for k in searchResults %}
+		{% for observation in search_result %}
 		  <tr>
-				<td>{{ loop.index }}</td>
+				<td>
+					{{ loop.index }}
+				</td>
 		    	<td>
-					<a href="http://127.0.0.1:5000/kdi/2013/local-elections/first-round/{{k['pollingStation']['communeSlug']}}">{{k['pollingStation']['commune']}}</a>
+					<a href="{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}">{{ observation['pollingStation']['commune'] }}</a>
 				</td>
 				<td>
-					<a href="http://127.0.0.1:5000/kdi/2013/local-elections/first-round/{{k['pollingStation']['communeSlug']}}/{{k['pollingStation']['nameSlug']}}">{{k['pollingStation']['name']}}</a>
+					<a href="{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}/{{ observation['pollingStation']['nameSlug'] }}">{{ observation['pollingStation']['name'] }}</a>
 				</td>
 				<td>
-					{{k['pollingStation']['number']}}
+					{{ observation['pollingStation']['number'] }}
 				</td>
 				<td>
-					<a href="http://127.0.0.1:5000/kdi/2013/local-elections/first-round/{{k['pollingStation']['communeSlug']}}/{{k['pollingStation']['nameSlug']}}/{{k['pollingStation']['roomNumber']}}">{{k['pollingStation']['roomNumber']}}</a>
+					<a href="{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}/{{ observation['pollingStation']['nameSlug'] }}/{{ observation['pollingStation']['roomNumber'] }}">{{ observation['pollingStation']['roomNumber'] }}</a>
 				</td>
 		  </tr>
 		{% endfor %}
 	  </tbody>
 </table>
-
-
-{{ pagination.info|safe }}
-
-<script type = "text/javascript">
-$(document).ready(function(){
-    //load the current contents of search result
-    $('#s-results').load('http://127.0.0.1:5000/search').show();
-$('#search-btn').click(function(){ showValues(); });
-
-$(function() {
- $('form').bind('submit',function(){ 
-	showValues(); 
-	return false; }); 
- }); 
-function showValues() {
-
- 
-$('#s-results').html('<p><img src="images/ajax-loader.gif" />
-	</p>'); //this will pass the form input 
-$.post('http://127.0.0.1:5000/search', { name: form.name.value }, //then print the result function(result){ $('#s-results').html(result).show(); }); } });
-</script>
-
-
-
 {% endblock %}

@@ -1,5 +1,5 @@
 // The base directory the application will be hosted in when deployed.
-var baseDirectory = '/app/election-monitoring-visualizer'
+var baseDirectory = '/app/election-monitoring-visualiser'
 
 
 $(document).ready(function() {

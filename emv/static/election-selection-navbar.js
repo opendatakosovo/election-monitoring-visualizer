@@ -2,10 +2,12 @@
 $(document).ready(function() {
 	//TODO: When we cover observation data from different organization, we will
 	//have to dynamically register events instead of hardcoding like this.
-
+	
+	
 	// First disable year, election type, and election round drop downs
 	initDropdowns();
 
+	
 	// Build array of election selection parameters.
 	// e.g. of resulting array: ["kdi", "2013", "local-elections", "first-round"]
 	// Remove first '/', this is why we use substring.
@@ -25,6 +27,7 @@ $(document).ready(function() {
 				// Enable election year dropdown.
 				$('.dropdown.election-year').removeClass('disabled');
 				$('.dropdown-toggle.election-year').removeClass('disabled');
+			
 
 			}else if(i == 1){
 				$('.dropdown-toggle.election-year').html(dropdownHtmlContent);
@@ -48,12 +51,33 @@ $(document).ready(function() {
 				$('.polling-station-selection-container').css('display', 'block');
 
 				// Enable search.
-				$('#search-button').css('display','block').removeClass('disabled');
+				$('#search-button').removeClass('disabled');
+				buildSearchUrl();
 			}	
 		}
 	}
 });
+function buildSearchUrl(){
+	// Building the search url
 
+	// Get the path of the document
+	path = window.location.pathname;
+
+	// Add '/search' to the path
+	search_path= "/search"+path;
+
+	// create an array based on the path string
+	url_array=search_path.split('/');
+
+	// Build the URL
+	search_url='/'+url_array[1]+'/'+url_array[2]+'/'+url_array[3]+'/'+url_array[4]+'/'+url_array[5];
+
+	// Get href element by id 'search-href'
+	var link = document.getElementById("search-href");
+
+	// Add Href Value to the href link
+	link.setAttribute("href",search_url);
+}
 function initDropdowns(){
 	$('.dropdown.election-year').addClass('disabled');
 	$('.dropdown-toggle.election-year').addClass('disabled');

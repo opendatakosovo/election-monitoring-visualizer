@@ -9,6 +9,7 @@
 	
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
+		
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
 
@@ -16,6 +17,12 @@
 	</head>
 
 	<body>
+	
+	<script type="text/javascript">
+	
+	// get the url path window.asksds.asds.path
+	
+	</script>	
 		<nav class="navbar navbar-default" role="navigation">
 			<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->
@@ -60,19 +67,13 @@
 								<li><a href="/kdi/2013/local-elections/second-round" id="second-round">Second Round</a></li>
 							</ul>
 						</li>
-						<li class="btn disabled" id="search-button"><a href="/search/kdi/2013/local-elections/first-round">Search</a></li>						
+						<li id="search-button" class="disabled">
+							<ul class="nav navbar-nav navbar-right">
+								<li><a href="" id="search-href">Search</a></li>	
+							</ul>
+						</li>
 					</ul>
 				</div>
-
-				<!--
-				<div class="collapse navbar-collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/">Home</a></li>
-						<li><a href="/search">Search</a></li>
-						<li><a href="/">API</a></li>
-					</ul>
-				</div>
-				-->
 			</div>
 		</nav>
 

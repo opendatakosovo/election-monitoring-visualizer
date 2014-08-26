@@ -17,7 +17,7 @@ class Search(MethodView):
 		:param election_round: The election round.
 		'''
 		api_url = utils.get_api_url(observer)
-
+		
 		# Get polling stations dictionary for the search select boxes.
 		polling_stations_url = '%s/polling-stations/%d/%s/%s' % (api_url, year, election_type, election_round)
 

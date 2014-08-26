@@ -1,5 +1,3 @@
-var basePath = '';
-
 $(document).ready(function() {
 	//TODO: When we cover observation data from different organization, we will
 	//have to dynamically register nav bar menu item events instead of hardcoding like this.

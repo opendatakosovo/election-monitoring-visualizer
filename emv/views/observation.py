@@ -13,7 +13,7 @@ class Observation(View):
 		kdi_api_url = utils.get_api_url(observer)
 
 		# Build GET Request URL.
-		url ='%s/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
+		url ='%s/observations/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
 
 		# Get and return JSON response.
 		observations = urlopen(url).read()

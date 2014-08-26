@@ -12,8 +12,6 @@
 		<script type="text/javascript" src="{{ url_for('static', filename='election-monitoring-visualizer.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='election-selection-navbar.js') }}"></script>
 
-		
-		
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
 
@@ -30,8 +28,12 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
-					</button>	
-					<a class="navbar-brand" href="{{ config.BASE_PATH }}">Kosovo Election Monitoring Visualiser <em>(Prototype)</em></a>
+					</button>
+					{% if config.BASE_PATH == '' %}
+						<a class="navbar-brand" href="/">Kosovo Election Monitoring Visualiser <em>(Prototype)</em></a>
+					{% else %}
+						<a class="navbar-brand" href="{{ config.BASE_PATH }}">Kosovo Election Monitoring Visualiser <em>(Prototype)</em></a>
+					{% endif %}
 				</div>
 
 				<!-- 
@@ -67,7 +69,7 @@
 						</li>
 						<li id="search-button" class="disabled">
 							<ul class="nav navbar-nav navbar-right">
-								<li><a href="" id="search-href">Search</a></li>	
+								<li><a id="search-href" style="color:#ccc">Search</a></li>	
 							</ul>
 						</li>
 					</ul>

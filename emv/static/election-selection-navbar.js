@@ -48,33 +48,24 @@ $(document).ready(function() {
 				$('.polling-station-selection-container').css('display', 'block');
 
 				// Enable search.
-				$('#search-button').removeClass('disabled');
-				buildSearchUrl();
+				initSearchPageLink();
 			}	
 		}
 	}
 });
-function buildSearchUrl(){
-	// Building the search url
 
-	// Get the path of the document
-	path = window.location.pathname;
+function initSearchPageLink(){
+	// Build the search page url. #PieceOfCake
+	search_page_url = basePath + "/search" + window.location.pathname.replace(basePath, '');
 
-	// Add '/search' to the path
-	search_path= "/search"+path;
+	// Add url to the link anchor tag.
+	$("#search-href").attr("href", search_page_url);
 
-	// create an array based on the path string
-	url_array=search_path.split('/');
-
-	// Build the URL
-	search_url='/'+url_array[1]+'/'+url_array[2]+'/'+url_array[3]+'/'+url_array[4]+'/'+url_array[5];
-
-	// Get href element by id 'search-href'
-	var link = document.getElementById("search-href");
-
-	// Add Href Value to the href link
-	link.setAttribute("href",search_url);
+	// Enable link.
+	$('#search-button').removeClass('disabled');
+	$("#search-href").css("color", '#777');
 }
+
 function initDropdowns(){
 	$('.dropdown.election-year').addClass('disabled');
 	$('.dropdown-toggle.election-year').addClass('disabled');
@@ -85,7 +76,11 @@ function initDropdowns(){
 	$('.dropdown.election-round').addClass('disabled');
 	$('.dropdown-toggle.election-round').addClass('disabled');
 
+	$('#search-button').addClass('disabled');
+
 	$('.polling-station-selection-container').css('display', 'none');
+
+	
 }
 
 

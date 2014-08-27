@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 config.cfg
 *.*~
+*.wsgi
 
 # C extensions
 *.so

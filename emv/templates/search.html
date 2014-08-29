@@ -7,9 +7,9 @@
 	function initPollingStationDropdown(communeSlug){
 
 		// First clear the polling station drowpown list
-		$('#polling_station_select option').remove();
+		$('#polling-station option').remove();
 
-		$('#polling_station_select')
+		$('#polling-station')
 				.append($("<option></option>")
 				.attr("value", "")
 				.text("")); 
@@ -17,7 +17,7 @@
 		var pollingStations = pollingStationGroupedByCommuneJson[communeSlug].pollingStations;
 
 		$.each(pollingStations, function(index, obj) {
-			$('#polling_station_select')
+			$('#polling-station')
 				.append($("<option></option>")
 				.attr("value", obj.slug)
 				.text(obj.name)); 
@@ -28,7 +28,7 @@
 	$(document).ready(function(){
 
 		// Option to search in all communes
-		$('#commune_select')
+		$('#commune')
 			.append($("<option></option>")
 			.attr("value", "")
 			.text("")); 
@@ -37,7 +37,7 @@
 		// index is the name of the commune.
 		// value is the name of the polling stations.
 		$.each(pollingStationGroupedByCommuneJson, function(idx, value) {
-			$('#commune_select')
+			$('#commune')
 				.append($("<option></option>")
 				.attr("value", idx)
 				.text(value.name)); 
@@ -46,28 +46,28 @@
 		});
 
 		// Initialize polling station name dropdown listin relation to default commune name.
-		//initPollingStationDropdown($('#commune_select').find(":selected").val());
+		//initPollingStationDropdown($('#commune').find(":selected").val());
 
 		// When new communue is selected, re-initialize the polling station name dropdown list.
-		$('#commune_select').change(function(){
-			if($('#commune_select').find(":selected").val() == ""){
+		$('#commune').change(function(){
+			if($('#commune').find(":selected").val() == ""){
 
-				$('#polling_station_select option').remove();
+				$('#polling-station option').remove();
 
 				// Option to search in all polling stations.
-				$('#polling_station_select')
+				$('#polling-station')
 						.append($("<option></option>")
 						.attr("value", "")
 						.text("")); 
 
-				$('#polling_station_select').attr('disabled', 'disabled');
+				$('#polling-station').attr('disabled', 'disabled');
 			}else{
-				$('#polling_station_select').removeAttr('disabled');
+				$('#polling-station').removeAttr('disabled');
 				initPollingStationDropdown($(this).val())
 			}
 
 			// Still want to submit even if disabled
-			$('#polling_station_hidden').val($('#polling_station_select').find(":selected").val())
+			$('#polling-station-hidden').val($('#polling-station').find(":selected").val())
 		});	
 
 	});
@@ -76,28 +76,28 @@
 <form class="form-horizontal">
 
 	<div class="form-group">
-		<label for="commune_select" class="control-label col-xs-2">Commune</label>
+		<label for="commune" class="control-label col-xs-2">Commune</label>
 		<div class="col-xs-3">
-			<select class="form-control" id="commune_select" name="commune_select">
+			<select class="form-control" id="commune" name="commune">
 			</select>
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label for="polling_station_select" class="control-label col-xs-2">Polling Station</label>
+		<label for="polling-station" class="control-label col-xs-2">Polling Station</label>
 		<div class="col-xs-3">
-			<select class="form-control" id="polling_station_select" name="polling_station_select" disabled="disabled">
+			<select class="form-control" id="polling-station" name="polling-station" disabled="disabled">
 				<option value=""></option>
 			</select>
 			<!-- Still want to submit even if disabled -->
-			<input type="hidden" id="polling_station_hidden" name="polling_station_select" value="" />
+			<input type="hidden" id="polling-station-hidden" name="polling-station" value="" />
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label for="ultra_violet_select" class="control-label col-xs-2">Ultra Violet</label>
+		<label for="ultra-violet-control" class="control-label col-xs-2">Ultra Violet</label>
 		<div class="col-xs-3">
-			<select class="form-control" id="ultra_violet_control_select" name="ultra_violet_control_select">
+			<select class="form-control" id="ultra-violet-control" name="ultra-violet-control">
 				<option value=""></option>
 				<option value="always">Always</option>
 				<option value="sometimes">Sometimes</option>
@@ -108,9 +108,9 @@
 	</div>
 
 	<div class="form-group">
-		<label for="finger_sprayed_select" class="control-label col-xs-2">Finger Sprayed</label>
+		<label for="finger-sprayed" class="control-label col-xs-2">Finger Sprayed</label>
 		<div class="col-xs-3">
-			<select class="form-control" id="finger_sprayed_select" name="finger_sprayed_select">
+			<select class="form-control" id="finger-sprayed" name="finger-sprayed">
 				<option value=""></option>
 				<option value="always">Always</option>
 				<option value="sometimes">Sometimes</option>
@@ -127,19 +127,19 @@
 
 		<div class="btn-group-vertical col-xs-3" data-toggle="buttons">
 			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing_voting_cabin" id="missing_voting_cabin" value="true">Voting Cabin
+				<input type="checkbox" class="btn btn-default" name="missing-voting-cabin" id="missing-voting-cabin" value="true">Voting Cabin
 			</label>
 			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing_ballot_box" id="missing_ballot_box" value="true">Ballot Box
+				<input type="checkbox" class="btn btn-default" name="missing-ballot-box" id="missing-ballot-box" value="true">Ballot Box
 			</label>
 			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing_ballots" id="missing_ballots" value="true">Ballots
+				<input type="checkbox" class="btn btn-default" name="missing-ballots" id="missing-ballots" value="true">Ballots
 			</label>
 			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing_voters_book" id="missing_voters_book" value="true">Voters Book
+				<input type="checkbox" class="btn btn-default" name="missing-voters-book" id="missing-voters-book" value="true">Voters Book
 			</label>
 			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing_uv_lamp" id="missing_uv_lamp" value="true">UV Lamp
+				<input type="checkbox" class="btn btn-default" name="missing-uv-lamp" id="missing-uv-lamp" value="true">UV Lamp
 			</label>
 		</div>
 	</div>

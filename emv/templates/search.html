@@ -68,7 +68,33 @@
 
 			// Still want to submit even if disabled
 			$('#polling-station-hidden').val($('#polling-station').find(":selected").val())
-		});	
+		});
+
+		// Set the fields to previously selected values.
+		// #FIXME: Should do this by passing form object to template instead of using javascript
+
+		var query = window.location.search.substring(1);
+		var params = query.split("&");
+
+    	for (var i=0; i< params.length; i++){
+			paramKeyValPair = params[i].split("=");
+			elemId = paramKeyValPair[0];
+			elemVal = paramKeyValPair[1];
+
+			if($('#' + elemId).is(':checkbox') && elemVal == 'true'){
+				$('#' + elemId).attr("checked", true);
+				$('#' + elemId + '-label').addClass("active");
+			}else{
+				if(elemId == 'commune'){
+					$('#polling-station').removeAttr('disabled');
+					initPollingStationDropdown(elemVal);
+				}
+
+				if($('#' + elemId).val() == ''){
+					$('#' + elemId).val(elemVal);
+				}
+			}
+		}
 
 	});
 </script>
@@ -126,19 +152,19 @@
 		</label>
 
 		<div class="btn-group-vertical col-xs-3" data-toggle="buttons">
-			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing-voting-booth" id="missing-voting-booth" value="true">Voting Cabin
+			<label class="btn btn-default" id="missing-voting-booth-label">
+				<input type="checkbox" class="btn btn-default" name="missing-voting-booth" id="missing-voting-booth" value="true">Voting Booth
 			</label>
-			<label class="btn btn-default">
+			<label class="btn btn-default" id="missing-ballot-box-label">
 				<input type="checkbox" class="btn btn-default" name="missing-ballot-box" id="missing-ballot-box" value="true">Ballot Box
 			</label>
-			<label class="btn btn-default">
+			<label class="btn btn-default" id="missing-ballots-label">
 				<input type="checkbox" class="btn btn-default" name="missing-ballots" id="missing-ballots" value="true">Ballots
 			</label>
-			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing-poll-book" id="missing-poll-book" value="true">Voters Book
+			<label class="btn btn-default" id="missing-poll-book-label">
+				<input type="checkbox" class="btn btn-default" name="missing-poll-book" id="missing-poll-book" value="true">Poll Book
 			</label>
-			<label class="btn btn-default">
+			<label class="btn btn-default" id="missing-uv-lamp-label">
 				<input type="checkbox" class="btn btn-default" name="missing-uv-lamp" id="missing-uv-lamp" value="true">UV Lamp
 			</label>
 		</div>

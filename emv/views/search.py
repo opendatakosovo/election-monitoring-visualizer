@@ -17,6 +17,7 @@ class Search(MethodView):
 		:param election_round: The election round.
 		'''
 		api_url = utils.get_api_url(observer)
+		directory_path = '%s/%d/%s/%s' % (observer, year, election_type, election_round)
 		
 		# Get polling stations dictionary for the search select boxes.
 		polling_stations_url = '%s/polling-stations/%d/%s/%s' % (api_url, year, election_type, election_round)
@@ -38,14 +39,18 @@ class Search(MethodView):
 		mvb = request.args.get('missing-poll-book')
 		mul = request.args.get('missing-uv-lamp')
 
-		url_params = (api_url, year, election_type, election_round, cmn, ps, uvc, fs, mvc, mbb, mb, mvb, mul)
+		search_result = []
+
+		# We don't want to execute the search when we load the page for the first time.
+		# Only do the search when we send search criterias in the GET request.
+		if(len(request.args) > 0):
+
+			url_params = (api_url, year, election_type, election_round, cmn, ps, uvc, fs, mvc, mbb, mb, mvb, mul)
 	
-		search_url = '%s/search/%d/%s/%s/?commune=%s&polling-station=%s&ultra-violet-control=%s&finger-sprayed=%s&missing-voting-booth=%s&missing-ballot-box=%s&missing-ballots=%s&missing-poll-book=%s&missing-uv-lamp=%s' % url_params
+			search_url = '%s/search/%d/%s/%s/?commune=%s&polling-station=%s&ultra-violet-control=%s&finger-sprayed=%s&missing-voting-booth=%s&missing-ballot-box=%s&missing-ballots=%s&missing-poll-book=%s&missing-uv-lamp=%s' % url_params
 
-		# Request the JSON Document from the URL Results
-		search_result = requests.get(search_url).json()
-
-		directory_path = '%s/%d/%s/%s' % (observer, year, election_type, election_round)
+			# Request the JSON Document from the URL Results
+			search_result = requests.get(search_url).json()
 
 		return render_template('search.html', directory_path=directory_path, polling_station_grouped_by_commune_dict=polling_station_grouped_by_commune_dict, search_result=search_result)
 

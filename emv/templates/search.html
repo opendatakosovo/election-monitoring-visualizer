@@ -200,13 +200,13 @@
 				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}" target="_blank">{{ observation['pollingStation']['commune']['name'] }}</a>
 			</td>
 			<td>
-				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}/{{ observation['pollingStation']['name']['slug'] }}" target="_blank">{{ observation['pollingStation']['name']['value'] }}</a>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}/{{ observation['pollingStation']['slug'] }}" target="_blank">{{ observation['pollingStation']['name'] }}</a>
 			</td>
 			<td>
 				{{ observation['pollingStation']['number'] }}
 			</td>
 			<td>
-				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}/{{ observation['pollingStation']['name']['slug'] }}/{{ observation['pollingStation']['room'] }}" target="_blank">{{ observation['pollingStation']['room'] }}</a>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}/{{ observation['pollingStation']['slug'] }}/{{ observation['pollingStation']['room'] }}" target="_blank">{{ observation['pollingStation']['room'] }}</a>
 			</td>
 		</tr>
 {% endfor %}

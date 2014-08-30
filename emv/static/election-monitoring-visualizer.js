@@ -13,14 +13,14 @@ function visualizeData(communeSlug, pollingStationSlug){
 
 			$("#dataVisualizationContainer").append('<div id="section-' + index + '"></div>');
 	
-			var roomNumer =  observation.pollingStation.roomNumber;
+			var roomNumer =  observation.pollingStation.room;
 			drawSectionHeader(index, roomNumer);
 
 			var voters = observation.votingProcess.voters.howManyVotedBy;
 			drawHowManyVotedByBarChart(index, voters);
 
-			var kvvMembers = observation.preparation.votingMaterialsPlacedInAndOutVotingStation.kvvMembers;
-			drawKvvMembersPieChart(index, kvvMembers);			
+			var pscMembers = observation.preparation.pscMembers;
+			drawKvvMembersPieChart(index, pscMembers);			
 			
 			var irregularities = observation.irregularities;
 			drawIrregularitiesTable(index, irregularities);
@@ -28,8 +28,8 @@ function visualizeData(communeSlug, pollingStationSlug){
 			var votingProcess = observation.votingProcess.voters;
 			drawVotingProcessTable(index, votingProcess);
 
-			var missingMaterial = observation.preparation.missingMaterial;
-			drawMissingMaterialTable(index, missingMaterial);
+			var missingMaterials = observation.preparation.missingMaterials;
+			drawMissingMaterialTable(index, missingMaterials);
 
 		});	
 	});
@@ -136,16 +136,15 @@ function drawIrregularitiesTable(index, irregularities){
     data.addColumn('string', 'Irregularity');
     data.addColumn('boolean', 'Occured');
     data.addRows([
-		['Unauthorized person stayed at the polling station.', translateIrregularity(irregularities.unauthorizedPersonsStayedAtTheVotingStation)],
-		['Allowed to vote.',  translateIrregularity(irregularities.allowedToVote)],
+		['Unauthorized person stayed at the polling station.', translateIrregularity(irregularities.unauthorizedPersonsStayedInPollingStation)],
 		['Photographed ballot.', translateIrregularity(irregularities.photographedBallot)],
-		['Accidents during the voting process.',  translateIrregularity(irregularities.anyAccidentHappenedDuringTheProcess)],
-		['Violence in the polling station.', translateIrregularity(irregularities.violenceInTheVotingStation)],
-		['More than one person in the voting cabin.',  translateIrregularity(irregularities.moreThanOnePersonBehindTheCabin)],
+		['Accidents during the voting process.',  translateIrregularity(irregularities.accidents)],
+		['Violence or threats in the polling station.', translateIrregularity(irregularities.violenceOrThreats)],
+		['More than one person in the voting booth (family voting).',  translateIrregularity(irregularities.moreThanOnePersonBehindTheBooth)],
 		['More than one ballot inserted.', translateIrregularity(irregularities.insertedMoreThanOneBallot)],
-		['Cases of closed polling station.',  translateIrregularity(irregularities.hasTheVotingStationBeenClosedInAnyCase)],
-		['Political propaganda inside the voting station.',  translateIrregularity(irregularities.politicalPropagandaInsideTheVotingStation)],
-		['Attempted to vote more than once.',  translateIrregularity(irregularities.attemptToVoteMoreThanOnce)]
+		['Polling station closed at some point during the day.',  translateIrregularity(irregularities.pollingStationClosedAtAnyPointDuringDay)],
+		['Political propaganda inside the voting station.',  translateIrregularity(irregularities.politicalPropagandaInsideThePollingStation)],
+		['Attempted to vote more than once.',  translateIrregularity(irregularities.moreThanOneVote.attempted)]
     ]);
 
 	renderListOfObservedYesNoIssues(data, containerDivId, listId, 'Irregularities:');
@@ -189,33 +188,33 @@ function drawVotingProcessTable(index, votingProcess){
 }
 
 
-function drawMissingMaterialTable(index, missingMaterial){
+function drawMissingMaterialTable(index, missingMaterials){
 		
 	var containerDivId = 'missing-material-' + index;
 	var listId = 'missing-material-list-' + index;
 	$("#dataVisualizationContainer #section-" + index).append("<div id='" + containerDivId + "'></div>");	
 
-	var ballotBox = missingMaterial.ballotBox;
-	var votersBook = missingMaterial.votersBook;
-	var spray = missingMaterial.spray;
-	var votersList = missingMaterial.votersList;
-	var envelopsForConditionVoters = missingMaterial.envelopsForConditionVoters;
-	var uvLamp = missingMaterial.uvLamp;
-	var votingCabin = missingMaterial.votingCabin;
-	var stamp = missingMaterial.stamp;
-	var ballots = missingMaterial.ballots;
+	var ballotBox = missingMaterials.ballotBox;
+	var pollBook = missingMaterials.pollBook;
+	var invisibleInk = missingMaterials.invisibleInk;
+	var votersList = missingMaterials.votersList;
+	var envelopesForConditionalVote = missingMaterials.envelopesForConditionalVote;
+	var uvLamp = missingMaterials.uvLamp;
+	var votingBooth = missingMaterials.votingBooth;
+	var stamp = missingMaterials.stamp;
+	var ballots = missingMaterials.ballots;
 
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'MissingMaterial');
     data.addColumn('boolean', 'Occured');
     data.addRows([
 		['Ballot box.', ballotBox ],
-		['Voters book.',  votersBook],
-		['Spray.', spray],
-		['Voters list.', votersList],
-		['Envelopes for condition voters.', envelopsForConditionVoters],
+		['Poll book.',  pollBook],
+		['Invisible ink.', invisibleInk],
+		['Voter\'s list.', votersList],
+		['Envelopes for conditional vote.', envelopesForConditionalVote],
 		['UV lamp.', uvLamp],
-		['Voting cabin.', votingCabin],
+		['Voting booth.', votingBooth],
 		['Stamp.', stamp],
 		['Ballots.', ballots]
 		

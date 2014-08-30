@@ -127,7 +127,7 @@
 
 		<div class="btn-group-vertical col-xs-3" data-toggle="buttons">
 			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing-voting-cabin" id="missing-voting-cabin" value="true">Voting Cabin
+				<input type="checkbox" class="btn btn-default" name="missing-voting-booth" id="missing-voting-booth" value="true">Voting Cabin
 			</label>
 			<label class="btn btn-default">
 				<input type="checkbox" class="btn btn-default" name="missing-ballot-box" id="missing-ballot-box" value="true">Ballot Box
@@ -136,7 +136,7 @@
 				<input type="checkbox" class="btn btn-default" name="missing-ballots" id="missing-ballots" value="true">Ballots
 			</label>
 			<label class="btn btn-default">
-				<input type="checkbox" class="btn btn-default" name="missing-voters-book" id="missing-voters-book" value="true">Voters Book
+				<input type="checkbox" class="btn btn-default" name="missing-poll-book" id="missing-poll-book" value="true">Voters Book
 			</label>
 			<label class="btn btn-default">
 				<input type="checkbox" class="btn btn-default" name="missing-uv-lamp" id="missing-uv-lamp" value="true">UV Lamp
@@ -171,16 +171,16 @@
 				{{ loop.index }}
 			</td>
 			<td>
-				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}" target="_blank">{{ observation['pollingStation']['commune'] }}</a>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}" target="_blank">{{ observation['pollingStation']['commune']['name'] }}</a>
 			</td>
 			<td>
-				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}/{{ observation['pollingStation']['nameSlug'] }}" target="_blank">{{ observation['pollingStation']['name'] }}</a>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}/{{ observation['pollingStation']['name']['slug'] }}" target="_blank">{{ observation['pollingStation']['name']['value'] }}</a>
 			</td>
 			<td>
 				{{ observation['pollingStation']['number'] }}
 			</td>
 			<td>
-				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['communeSlug'] }}/{{ observation['pollingStation']['nameSlug'] }}/{{ observation['pollingStation']['roomNumber'] }}" target="_blank">{{ observation['pollingStation']['roomNumber'] }}</a>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}/{{ observation['pollingStation']['name']['slug'] }}/{{ observation['pollingStation']['room'] }}" target="_blank">{{ observation['pollingStation']['room'] }}</a>
 			</td>
 		</tr>
 {% endfor %}

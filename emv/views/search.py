@@ -32,15 +32,15 @@ class Search(MethodView):
 		ps = request.args.get('polling-station')
 		uvc = request.args.get('ultra-violet-control')
 		fs = request.args.get('finger-sprayed')
-		mvc = request.args.get('missing-voting-cabin')
+		mvc = request.args.get('missing-voting-booth')
 		mbb = request.args.get('missing-ballot-box')
 		mb = request.args.get('missing-ballots')
-		mvb = request.args.get('missing-voters-book')
+		mvb = request.args.get('missing-poll-book')
 		mul = request.args.get('missing-uv-lamp')
 
 		url_params = (api_url, year, election_type, election_round, cmn, ps, uvc, fs, mvc, mbb, mb, mvb, mul)
 	
-		search_url = '%s/search/%d/%s/%s/?commune=%s&polling-station=%s&ultra-violet-control=%s&finger-sprayed=%s&missing-voting-cabin=%s&missing-ballot-box=%s&missing-ballots=%s&missing-voters-book=%s&missing-uv-lamp=%s' % url_params
+		search_url = '%s/search/%d/%s/%s/?commune=%s&polling-station=%s&ultra-violet-control=%s&finger-sprayed=%s&missing-voting-booth=%s&missing-ballot-box=%s&missing-ballots=%s&missing-poll-book=%s&missing-uv-lamp=%s' % url_params
 
 		# Request the JSON Document from the URL Results
 		search_result = requests.get(search_url).json()

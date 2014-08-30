@@ -95,8 +95,8 @@ function getDropdownHtmlContent(urlParam){
 
 	// TODO: Hardcoded for now because we only have one data source (KDI).
 	// Needs to be automated when we have more datasources.
-	if(urlParam == 'kdi'){
-		val = 'Kosova Democratic Institute';
+	if(urlParam == 'dia'){
+		val = 'Democracy in Action';
 
 	// TODO: Just detect via regex if it is a year value return the same value if it is.
 	}else if(urlParam == '2013'){

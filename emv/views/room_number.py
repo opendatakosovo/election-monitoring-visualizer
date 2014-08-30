@@ -25,7 +25,7 @@ class RoomNumber(View):
 		polling_station_name = polling_stations_dict[commune_slug]['pollingStations'][0]['name']
 	
 		# URL to request from KDI API for KVV members gender distribution.
-		url = '%s/kvv-members-gender-distribution/%d/%s/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug, room_number)
+		url = '%s/psc-members-gender-distribution/%d/%s/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug, room_number)
 
 		# Fetch data.
 		kvv_response = urlopen(url).read()
@@ -38,7 +38,7 @@ class RoomNumber(View):
 			kvv_dict = None
 
 		# URL to request from KDI API for vote counts by hour
-		votes_count_url = '%s/votes-count/%d/%s/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug, room_number)
+		votes_count_url = '%s/hour-vote-count/%d/%s/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug, room_number)
 
 		# Fetch data.
 		votes_by_hour_response = urlopen(votes_count_url).read()

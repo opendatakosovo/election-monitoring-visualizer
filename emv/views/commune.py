@@ -24,7 +24,7 @@ class Commune(View):
 		commune_name = polling_stations_dict[commune_slug]['name']
 
 		# Request the KVV members gender distribution.
-		kvv_request_url = '%s/kvv-members-gender-distribution/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug)
+		kvv_request_url = '%s/psc-members-gender-distribution/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug)
 		
 		# Open the JSON Document.
 		kvvMGD_response = urlopen(kvv_request_url).read()
@@ -33,7 +33,7 @@ class Commune(View):
 		kvv_members_gender_distribution_dict = json.loads(kvvMGD_response)
 
 		# Request hour vote count.
-		votes_by_hours_request_url ='%s/votes-count/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug)
+		votes_by_hours_request_url ='%s/hour-vote-count/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug)
 
 		# Open the JSON Document.
 		votes_by_hour_response = urlopen(votes_by_hours_request_url).read()

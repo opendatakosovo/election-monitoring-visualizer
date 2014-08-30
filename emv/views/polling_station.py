@@ -16,8 +16,6 @@ class PollingStation(MethodView):
 		# A bit hardore but plet's get it by making a GET request to polling stations JSON data.
 		commune_polling_stations_request_url = '%s/polling-stations/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
 
-		print commune_polling_stations_request_url
-
 		# Open the JSON Document.
 		polling_stations_response = urlopen(commune_polling_stations_request_url).read()
 
@@ -27,7 +25,7 @@ class PollingStation(MethodView):
 		polling_station_name = polling_stations_dict[commune_slug]['pollingStations'][0]['name']
 		
 		# URL to request the KVV members gender distribution from KDI API.
-		kvv_genders_request_url = '%s/kvv-members-gender-distribution/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
+		kvv_genders_request_url = '%s/psc-members-gender-distribution/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
 
 		print kvv_genders_request_url
 
@@ -42,7 +40,7 @@ class PollingStation(MethodView):
 			kvv_dict = None
 
 		# URL to request from KDI API for hour vote counts.
-		votes_by_hour_request_url = '%s/votes-count/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
+		votes_by_hour_request_url = '%s/hour-vote-count/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
 
 		# Fetch response
 		votes_by_hour_response = urlopen(votes_by_hour_request_url).read()

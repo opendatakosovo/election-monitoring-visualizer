@@ -14,7 +14,7 @@ class Commune(View):
 
 		# We need the commune name (we only have the slug).
 		# A bit hardore but plet's get it by making a GET request to polling stations JSON data.
-		commune_polling_stations_request_url = '%s/polling-stations/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug)
+		commune_polling_stations_request_url = '%s/voting-centers/%d/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug)
 
 		# Open the JSON Document.
 		polling_stations_response = urlopen(commune_polling_stations_request_url).read()

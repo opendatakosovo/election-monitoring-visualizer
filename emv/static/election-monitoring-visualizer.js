@@ -13,20 +13,20 @@ function visualizeData(communeSlug, pollingStationSlug){
 
 			$("#dataVisualizationContainer").append('<div id="section-' + index + '"></div>');
 	
-			var roomNumer =  observation.pollingStation.room;
-			drawSectionHeader(index, roomNumer);
+			var stationNumber =  observation.votingCenter.stationNumber;
+			drawSectionHeader(index, stationNumber);
 
-			var voters = observation.votingProcess.voters.howManyVotedBy;
-			drawHowManyVotedByBarChart(index, voters);
+			var howManyVotedBy = observation.voting.process.voters.howManyVotedBy;
+			drawHowManyVotedByBarChart(index, howManyVotedBy);
 
 			var pscMembers = observation.preparation.pscMembers;
 			drawKvvMembersPieChart(index, pscMembers);			
 			
-			var irregularities = observation.irregularities;
+			var irregularities = observation.voting.irregularities;
 			drawIrregularitiesTable(index, irregularities);
 
-			var votingProcess = observation.votingProcess.voters;
-			drawVotingProcessTable(index, votingProcess);
+			var votingProcessVoters = observation.votingProcess.voters;
+			drawVotingProcessTable(index, votingProcessVoters);
 
 			var missingMaterials = observation.preparation.missingMaterials;
 			drawMissingMaterialTable(index, missingMaterials);
@@ -56,11 +56,11 @@ function drawSectionHeader(index, roomNumber){
 
 }
 
-function drawHowManyVotedByBarChart(index, voters){
-	var votersByTen = voters.tenAM;
-	var votersByOne = voters.onePM;
-	var votersByFour = voters.fourPM;
-	var votersBySeven = voters.sevenPM;
+function drawHowManyVotedByBarChart(index, howManyVotedBy){
+	var votersByTen = howManyVotedBy.tenAM;
+	var votersByOne = howManyVotedBy.onePM;
+	var votersByFour = howManyVotedBy.fourPM;
+	var votersBySeven = howManyVotedBy.sevenPM;
 
 	// create div container for the bar chart
 	var chartContainerDivId = 'votersByHourBarChart-' + index;
@@ -97,19 +97,19 @@ function drawHowManyVotedByBarChart(index, voters){
 // Draw the KVV members gender distribution pit chart
 function drawKvvMembersPieChart(index, kvvMembers){
 	var kvvMembersTotal = kvvMembers.total;
-	var kvvMembersFemale = kvvMembers.female;
+	var kvvMembersWomen = kvvMembers.women;
 
 	// create div container for the pie chart
 	// e.g. <div id="kvvMembersPieChart" style="width: 900px; height: 500px;"></div>
 	var chartContainerDivId = 'kvvMembersPieChart-' + index;
 	$("#dataVisualizationContainer #section-" + index).append("<div id='" + chartContainerDivId + "' style='width:50%'></div>");
 
-	var kvvMembersMale = kvvMembersTotal - kvvMembersFemale;
+	var kvvMembersMale = kvvMembersTotal - kvvMembersWomen;
 
 	var data = google.visualization.arrayToDataTable([
 		['Gender', 'Number'],
 		['Male', kvvMembersMale],
-		['Female', kvvMembersFemale]
+		['Female', kvvMembersWomen]
 	]);
 
 	var options = {
@@ -138,13 +138,13 @@ function drawIrregularitiesTable(index, irregularities){
     data.addRows([
 		['Unauthorized person stayed at the polling station.', translateIrregularity(irregularities.unauthorizedPersonsStayedInPollingStation)],
 		['Photographed ballot.', translateIrregularity(irregularities.photographedBallot)],
-		['Accidents during the voting process.',  translateIrregularity(irregularities.accidents)],
+		['Incidents during the voting process.',  translateIrregularity(irregularities.incidents)],
 		['Violence or threats in the polling station.', translateIrregularity(irregularities.violenceOrThreats)],
 		['More than one person in the voting booth (family voting).',  translateIrregularity(irregularities.moreThanOnePersonBehindTheBooth)],
-		['More than one ballot inserted.', translateIrregularity(irregularities.insertedMoreThanOneBallot)],
+		['More than one ballot inserted.', translateIrregularity(irregularities.personInsertedMoreThanOneBallot)],
 		['Polling station closed at some point during the day.',  translateIrregularity(irregularities.pollingStationClosedAtAnyPointDuringDay)],
 		['Political propaganda inside the voting station.',  translateIrregularity(irregularities.politicalPropagandaInsideThePollingStation)],
-		['Attempted to vote more than once.',  translateIrregularity(irregularities.moreThanOneVote.attempted)]
+		['Attempt to vote more than once.',  translateIrregularity(irregularities.anyoneTriedToVoteMoreThanOnce.attempted)]
     ]);
 
 	renderListOfObservedYesNoIssues(data, containerDivId, listId, 'Irregularities:');
@@ -163,15 +163,15 @@ function translateIrregularity(irregularity){
 	}
 }
 
-function drawVotingProcessTable(index, votingProcess){
+function drawVotingProcessTable(index, votingProcessVoters){
 	
 	var containerDivId = 'voting-process-' + index;
 	var listId = 'voting-process-list-' + index;
 	$("#dataVisualizationContainer #section-" + index).append("<div id='" + containerDivId + "'></div>");
 
-	var ultraControl= votingProcess.ultraVioletControl;
-	var fingerSprayed =votingProcess.fingerSprayed;
-	var identifiedWithDocument = votingProcess.identifiedWithDocument;
+	var ultraControl = votingProcessVoters.ultraVioletControl;
+	var fingerSprayed = votingProcessVoters.fingerSprayed;
+	var identifiedWithDocument = votingProcessVoters.identifiedWithDocument;
 
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'VotingProcess');
@@ -281,7 +281,7 @@ function initPollingStationDropdown(communeSlug){
 	// First clear the polling station drowpown list
 	$('#polling_station_select option').remove();
 
-	var pollingStations = pollingStationGroupedByCommuneJson[communeSlug].pollingStations;
+	var pollingStations = pollingStationGroupedByCommuneJson[communeSlug].votingCenters;
 
 	$.each(pollingStations, function(index, obj) {
 		$('#polling_station_select')

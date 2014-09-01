@@ -62,12 +62,16 @@ $(document).ready(function() {
 });
 
 function initSearchPageLink(){
+	var search_page_url = '';
+
 	// Build the search page url.
-	search_page_url = basePath + window.location.pathname.replace(basePath, '');
+	var page_path = window.location.pathname.replace(basePath, '');
+
+	var page_dirs = page_path.split('/');
 
 	// If doesn't end with '/search' already (like in the search page).
 	if(search_page_url.indexOf("/search", search_page_url.length - "/search".length) == -1){
-		search_page_url = search_page_url + "/search";
+		search_page_url = basePath + "/" + page_dirs[1] + "/" + page_dirs[2] + "/" + page_dirs[3] + "/" + page_dirs[4] + "/search";
 	}
 
 	// Add url to the link anchor tag.

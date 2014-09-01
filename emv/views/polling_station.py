@@ -14,7 +14,7 @@ class PollingStation(MethodView):
 
 		# We need the commune name (we only have the slug).
 		# A bit hardore but plet's get it by making a GET request to polling stations JSON data.
-		commune_polling_stations_request_url = '%s/polling-stations/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
+		commune_polling_stations_request_url = '%s/voting-centers/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
 
 		# Open the JSON Document.
 		polling_stations_response = urlopen(commune_polling_stations_request_url).read()
@@ -22,12 +22,10 @@ class PollingStation(MethodView):
 		# Get the commune and polling station name.
 		polling_stations_dict = json.loads(polling_stations_response)
 		commune_name = polling_stations_dict[commune_slug]['name']
-		polling_station_name = polling_stations_dict[commune_slug]['pollingStations'][0]['name']
+		polling_station_name = polling_stations_dict[commune_slug]['votingCenters'][0]['name']
 		
 		# URL to request the KVV members gender distribution from KDI API.
 		kvv_genders_request_url = '%s/psc-members-gender-distribution/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
-
-		print kvv_genders_request_url
 
 		# Fetch response
 		kvv_response = urlopen(kvv_genders_request_url).read()
@@ -35,7 +33,7 @@ class PollingStation(MethodView):
 		# Convert JSON into a Dictionary.
 		kvv_dict = json.loads(kvv_response)
 
-		# FIXME: Sometimesthe result is empty. Why? e.g. /kdi/kvv-members-gender-distribution/2013/localelections/first-round/ferizaj/fetah-sylejmani
+		# FIXME: Sometimesthe result is empty. Why? e.g. /kdi/psc-members-gender-distribution/2013/localelections/first-round/ferizaj/fetah-sylejmani
 		if len(kvv_dict['result']) == 0:
 			kvv_dict = None
 

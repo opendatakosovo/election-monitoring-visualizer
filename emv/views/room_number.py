@@ -14,7 +14,7 @@ class RoomNumber(View):
 
 		# We need the commune name (we only have the slug).
 		# A bit hardore but plet's get it by making a GET request to polling stations JSON data.
-		commune_polling_stations_request_url = '%s/polling-stations/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
+		commune_polling_stations_request_url = '%s/voting-centers/%d/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug)
 
 		# Open the JSON Document.
 		polling_stations_response = urlopen(commune_polling_stations_request_url).read()
@@ -22,7 +22,7 @@ class RoomNumber(View):
 		# Get the commune and polling station name.
 		polling_stations_dict = json.loads(polling_stations_response)
 		commune_name = polling_stations_dict[commune_slug]['name']
-		polling_station_name = polling_stations_dict[commune_slug]['pollingStations'][0]['name']
+		polling_station_name = polling_stations_dict[commune_slug]['votingCenters'][0]['name']
 	
 		# URL to request from KDI API for KVV members gender distribution.
 		url = '%s/psc-members-gender-distribution/%d/%s/%s/%s/%s/%s' % (kdi_api_url, year, election_type, election_round, commune_slug, polling_station_slug, room_number)

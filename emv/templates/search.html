@@ -7,21 +7,23 @@
 	function initPollingStationDropdown(communeSlug){
 
 		// First clear the polling station drowpown list
-		$('#polling-station option').remove();
+		$('#voting-center option').remove();
 
-		$('#polling-station')
+		$('#voting-center')
 				.append($("<option></option>")
 				.attr("value", "")
 				.text("")); 
 
-		var pollingStations = pollingStationGroupedByCommuneJson[communeSlug].pollingStations;
+		if(communeSlug != ""){
+			var votingCenters = pollingStationGroupedByCommuneJson[communeSlug].votingCenters;
 
-		$.each(pollingStations, function(index, obj) {
-			$('#polling-station')
-				.append($("<option></option>")
-				.attr("value", obj.slug)
-				.text(obj.name)); 
-		});
+			$.each(votingCenters, function(index, obj) {
+				$('#voting-center')
+					.append($("<option></option>")
+					.attr("value", obj.slug)
+					.text(obj.name)); 
+			});
+		}
 
 	}
 
@@ -52,22 +54,22 @@
 		$('#commune').change(function(){
 			if($('#commune').find(":selected").val() == ""){
 
-				$('#polling-station option').remove();
+				$('#voting-center option').remove();
 
 				// Option to search in all polling stations.
-				$('#polling-station')
+				$('#voting-center')
 						.append($("<option></option>")
 						.attr("value", "")
 						.text("")); 
 
-				$('#polling-station').attr('disabled', 'disabled');
+				$('#voting-center').attr('disabled', 'disabled');
 			}else{
-				$('#polling-station').removeAttr('disabled');
+				$('#voting-center').removeAttr('disabled');
 				initPollingStationDropdown($(this).val())
 			}
 
 			// Still want to submit even if disabled
-			$('#polling-station-hidden').val($('#polling-station').find(":selected").val())
+			$('#voting-center-hidden').val($('#voting-center').find(":selected").val())
 		});
 
 		// Set the fields to previously selected values.
@@ -86,7 +88,7 @@
 				$('#' + elemId + '-label').addClass("active");
 			}else{
 				if(elemId == 'commune'){
-					$('#polling-station').removeAttr('disabled');
+					$('#voting-center').removeAttr('disabled');
 					initPollingStationDropdown(elemVal);
 				}
 
@@ -110,13 +112,13 @@
 	</div>
 
 	<div class="form-group">
-		<label for="polling-station" class="control-label col-xs-2">Polling Station</label>
+		<label for="voting-center" class="control-label col-xs-2">Polling Station</label>
 		<div class="col-xs-3">
-			<select class="form-control" id="polling-station" name="polling-station" disabled="disabled">
+			<select class="form-control" id="voting-center" name="voting-center" disabled="disabled">
 				<option value=""></option>
 			</select>
 			<!-- Still want to submit even if disabled -->
-			<input type="hidden" id="polling-station-hidden" name="polling-station" value="" />
+			<input type="hidden" id="voting-center-hidden" name="voting-center" value="" />
 		</div>
 	</div>
 
@@ -197,16 +199,16 @@
 				{{ loop.index }}
 			</td>
 			<td>
-				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}" target="_blank">{{ observation['pollingStation']['commune']['name'] }}</a>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['votingCenter']['commune']['slug'] }}" target="_blank">{{ observation['votingCenter']['commune']['name'] }}</a>
 			</td>
 			<td>
-				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}/{{ observation['pollingStation']['slug'] }}" target="_blank">{{ observation['pollingStation']['name'] }}</a>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['votingCenter']['commune']['slug'] }}/{{ observation['votingCenter']['slug'] }}" target="_blank">{{ observation['votingCenter']['name'] }}</a>
 			</td>
 			<td>
-				{{ observation['pollingStation']['number'] }}
+				{{ observation['votingCenter']['number'] }}
 			</td>
 			<td>
-				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['pollingStation']['commune']['slug'] }}/{{ observation['pollingStation']['slug'] }}/{{ observation['pollingStation']['room'] }}" target="_blank">{{ observation['pollingStation']['room'] }}</a>
+				<a href="{{ config.BASE_PATH }}/{{ directory_path }}/{{ observation['votingCenter']['commune']['slug'] }}/{{ observation['votingCenter']['slug'] }}/{{ observation['votingCenter']['stationNumber'] }}" target="_blank">{{ observation['votingCenter']['stationNumber'] }}</a>
 			</td>
 		</tr>
 {% endfor %}

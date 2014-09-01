@@ -18,7 +18,7 @@ class Index(View):
 
 		if observer != None and year != None and election_type != None and election_round != None:
 			api_url = utils.get_api_url(observer)
-			url = '%s/polling-stations/%d/%s/%s' % (api_url, year, election_type, election_round)
+			url = '%s/voting-centers/%d/%s/%s' % (api_url, year, election_type, election_round)
 
 			# Open the JSON Document requested from the EMA
 			polling_station_grouped_by_commune_response = urlopen(url).read()

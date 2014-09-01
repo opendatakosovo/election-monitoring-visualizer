@@ -20,7 +20,7 @@ class Search(MethodView):
 		directory_path = '%s/%d/%s/%s' % (observer, year, election_type, election_round)
 		
 		# Get polling stations dictionary for the search select boxes.
-		polling_stations_url = '%s/polling-stations/%d/%s/%s' % (api_url, year, election_type, election_round)
+		polling_stations_url = '%s/voting-centers/%d/%s/%s' % (api_url, year, election_type, election_round)
 
 		# Fetch response
 		polling_station_grouped_by_commune_response = urlopen(polling_stations_url).read()
@@ -30,7 +30,7 @@ class Search(MethodView):
 
 		# Search criterias
 		cmn = request.args.get('commune')
-		ps = request.args.get('polling-station')
+		vc = request.args.get('voting-center')
 		uvc = request.args.get('ultra-violet-control')
 		fs = request.args.get('finger-sprayed')
 		mvc = request.args.get('missing-voting-booth')
@@ -45,9 +45,9 @@ class Search(MethodView):
 		# Only do the search when we send search criterias in the GET request.
 		if(len(request.args) > 0):
 
-			url_params = (api_url, year, election_type, election_round, cmn, ps, uvc, fs, mvc, mbb, mb, mvb, mul)
+			url_params = (api_url, year, election_type, election_round, cmn, vc, uvc, fs, mvc, mbb, mb, mvb, mul)
 	
-			search_url = '%s/search/%d/%s/%s/?commune=%s&polling-station=%s&ultra-violet-control=%s&finger-sprayed=%s&missing-voting-booth=%s&missing-ballot-box=%s&missing-ballots=%s&missing-poll-book=%s&missing-uv-lamp=%s' % url_params
+			search_url = '%s/search/%d/%s/%s/?commune=%s&voting-center=%s&ultra-violet-control=%s&finger-sprayed=%s&missing-voting-booth=%s&missing-ballot-box=%s&missing-ballots=%s&missing-poll-book=%s&missing-uv-lamp=%s' % url_params
 
 			# Request the JSON Document from the URL Results
 			search_result = requests.get(search_url).json()

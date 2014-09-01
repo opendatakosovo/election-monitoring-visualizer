@@ -11,9 +11,9 @@
 		var kvvMembers = undefined;
 		
 		{% if kvv != None %}
-			kvvMembers = Object();
-			kvvMembers.total = {{ kvv['result'][0]['total'] }};
-	 		kvvMembers.female = {{ kvv['result'][0]['totalFemale'] }};
+			pscMembers = Object();
+			pscMembers.total = {{ kvv['result'][0]['total'] }};
+	 		pscMembers.women = {{ kvv['result'][0]['totalWomen'] }};
     	{% endif %}
 
 		var title = "";
@@ -27,7 +27,7 @@
 		{% endif %}
 		
 		$(document).ready(function(){
-			visualizeSummaryData(title, voters, kvvMembers);
+			visualizeSummaryData(title, voters, pscMembers);
 		});
 	</script>
 
